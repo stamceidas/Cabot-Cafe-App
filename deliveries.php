@@ -7,7 +7,7 @@
 	$happens = mysql_real_escape_string($_POST["happens_text"]);
 	$comments = mysql_real_escape_string($_POST["comments_text"]);
 	
-	$newline = "\n";
+	$newline = "\n\r";
 	
 	echo $arrivals;
 	echo $newline;
@@ -19,14 +19,14 @@
 	$date = date("Ymd");
 	$time = date("Gi");
 	//generate log
-	$filename = "delivery_logs\\delivery_log_".$date."_".$time.".txt";
+	$filename = "delivery_logs/delivery_log_".$date."_".$time.".txt";
 	$filehandle =  fopen($filename, 'w') or die("Log could not be generated. Reconnect to wifi and try again.");
 	
-	$filelog = "What arrived and how many?\n";
+	$filelog = "What arrived and how many? ". $newline . $newline;
 	$filelog = $filelog . $arrivals . $newline . $newline;
-	$filelog = $filelog . "What arrived and how many?\n";
+	$filelog = $filelog . "What did you do with it? ". $newline . $newline;
 	$filelog = $filelog . $happens . $newline . $newline;
-	$filelog = $filelog . "What arrived and how many?\n";
+	$filelog = $filelog . "Comments and name: ". $newline . $newline;
 	$filelog = $filelog . $comments . $newline . $newline;
 	
 	fwrite($filehandle,$filelog);
@@ -75,6 +75,12 @@
 					echo "<p>Email submission successful!</p>";
 				else
 					echo "<p>Email submission failed</p>";
+					
+				echo $arrivals;
+				echo $newline;
+				echo $happens;
+				echo $newline;
+				echo $comments;
 			?>
 			<p><a href="index.php" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
 		</div><!-- /content -->
