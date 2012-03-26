@@ -1,20 +1,24 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>Cabot Cafe App</title> 
+	<link rel="stylesheet" href="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+</head> 
+
 <?
 
 	require_once("constants.php");
 	
 	//pull post
-	$arrivals = mysql_real_escape_string($_POST["arrivals_text"]);
-	$happens = mysql_real_escape_string($_POST["happens_text"]);
-	$comments = mysql_real_escape_string($_POST["comments_text"]);
+	$arrivals = htmlentities($_POST["arrivals_text"]);
+	$happens = htmlentities($_POST["happens_text"]);
+	$comments = htmlentities($_POST["comments_text"]);
 	
-	$newline = "\n\r";
+	var_dump($_POST);
 	
-	echo $arrivals;
-	echo $newline;
-	echo $happens;
-	echo $newline;
-	echo $comments;
-	
+	$newline = "\n";
 	
 	$date = date("Ymd");
 	$time = date("Gi");
@@ -48,15 +52,6 @@
 
 
 ?>
-
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<title>Cabot Cafe App</title> 
-	<link rel="stylesheet" href="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
-</head> 
 
 <body>
 
