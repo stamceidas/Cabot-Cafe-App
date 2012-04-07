@@ -1,4 +1,18 @@
 <!DOCTYPE html> 
+<?
+	session_start();
+	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+	//header("Location: #");
+	// sleep(3);
+	// if(isset($_SESSION['reloaded'])){
+		// $_SESSION['reloaded']=false; 
+	// } 
+	// else{ 
+		// $_SESSION['reloaded']=true; 
+		// header("Location: #");
+	// }
+?>
+
 <html>
 
 <head>
@@ -44,9 +58,47 @@
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="d">	
-		<h2>Two</h2>
-		<p>I have an id of "two" on my page container. I'm the second page container in this multi-page template.</p>	
-		<p>Notice that the theme is different for this page because we've added a few <code>data-theme</code> swatch assigments here to show off how flexible it is. You can add any content or widget to these pages, but we're keeping these simple.</p>	
+		<h3>Front Fridge</h3>
+			<h4> How many cartons left? </h4>
+			<form>
+				<label for="whole-f">Whole Milk:</label>
+				<input type="range" name="whole-f" id="whole-f" value="10" min="0" max="20"  />
+			</form>
+			<form>
+				<label for="skim-f">Skim Milk:</label>
+				<input type="range" name="skim-f" id="skim-f" value="10" min="0" max="20"  />
+			</form>
+			<form>
+				<label for="soy-f">Soy Milk:</label>
+				<input type="range" name="soy-f" id="soy-f" value="10" min="0" max="20"  />
+			</form>
+		
+		<h3>Back Fridge</h3>
+			<h4> How many cartons left? </h4>
+			<form>
+				<label for="whole-b">Whole Milk:</label>
+				<input type="range" name="whole-b" id="whole-b" value="10" min="0" max="20"  />
+			</form>
+			<form>
+				<label for="skim-b">Skim Milk:</label>
+				<input type="range" name="skim-b" id="skim-b" value="10" min="0" max="20"  />
+			</form>
+			<form>
+				<label for="soy-b">Soy Milk:</label>
+				<input type="range" name="soy-b" id="soy-b" value="10" min="0" max="20"  />
+			</form>
+		
+		<h3>Counter</h3>
+			<h4> How much of the bag is left?</h4>
+			<form>
+				<label for="regbean">Regular Beans:</label>
+				<input type="range" name="regbean" id="regbean" value="0.5" min="0" max="1" step="0.1"  />
+			</form>
+			<form>
+				<label for="decafbean">Decaf Beans:</label>
+				<input type="range" name="decafbean" id="decafbean" value="0.5" min="0" max="1" step="0.1"  />
+			</form>
+		
 		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
 		
 	</div><!-- /content -->
@@ -116,12 +168,13 @@
 <div data-role="page" id="emergency">
 
 	<div data-role="header" data-theme="e">
-		<h1>Dialog</h1>
+		<h1>Emergency??</h1>
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="d">	
-		<h2>Popup</h2>
-		<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
+		<h2>Contact Numbers</h2>
+		<p> Jesse Kaplan: tel: 5555555 </p>
+		<p> (note: need to admin panel this) </p>
 		<p><a href="#home" data-rel="back" data-role="button" data-inline="true" data-icon="back">Home</a></p>	
 	</div><!-- /content -->
 	

@@ -71,13 +71,13 @@
 				else
 					echo "<p>Email submission failed</p>";
 					
-				echo $arrivals;
-				echo $newline;
-				echo $happens;
-				echo $newline;
-				echo $comments;
+				// echo $arrivals;
+				// echo $newline;
+				// echo $happens;
+				// echo $newline;
+				// echo $comments;
 			?>
-			<p><a href="index.php" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
+			<p><a href="index.php" data-role="button" data-theme="d">Home</a></p>	
 		</div><!-- /content -->
 		
 		<div data-role="footer" data-theme="d">
