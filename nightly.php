@@ -1,8 +1,8 @@
 <?
 	/********************************************
-	* Deliveries.php
+	* Nightly.php
 	*********************************************
-	* Handles the deliveries form 
+	* Handles the nightly inventory form 
 	* Generates submission log
 	* Emails receipt to manager
 	*********************************************/
@@ -24,28 +24,63 @@
 	require_once("constants.php");
 	
 	//pull post
-	$arrivals = htmlentities($_POST["arrivals_text"]);
-	$happens = htmlentities($_POST["happens_text"]);
-	$comments = htmlentities($_POST["comments_text"]);
+	$whole_f = htmlentities($_POST["whole-f"]);
+	$skim_f = htmlentities($_POST["skim-f"]);
+	$soy_f = htmlentities($_POST["soy-f"]);
 	
+	$whole_b = htmlentities($_POST["whole-b"]);
+	$skim_b = htmlentities($_POST["skim-b"]);
+	$soy_b = htmlentities($_POST["soy-b"]);
+	
+	$regbean = htmlentities($_POST["regbean"]);
+	$decafbean = htmlentities($_POST["decafbean"]);
+	
+	$comments = htmlentities($_POST["nightinventcomment"]);
+	
+	//var_dump($_POST);
+
 	$newline = "\n";
 	$break = "=================================";
 	
+	$whole = "Whole Milk: ";
+	$skim = "Skim Milk: ";
+	$soy = "Soy Milk: ";
+	
 	$date = date("Ymd");
 	$time = date("Gi");
+	
 	//generate log
-	$filename = "delivery_logs/delivery_log_".$date."_".$time.".txt";
+	$filename = "nightly_logs/nightly_log_".$date."_".$time.".txt";
 	$filehandle =  fopen($filename, 'w') or die("Log could not be generated. Reconnect to wifi and try again.");
 	
 	$datecreated = "Date Created: " . $date . $newline;
 	$timecreated = "Time Created: " . $time . $newline;
+	
 
-	$filelog = "Delivery Log" . $newline . $newline;
+	
+	$filelog = "Nightly Inventory Log" . $newline . $newline;
 	$filelog = $filelog . $datecreated . $timecreated . $break . $newline . $newline;
-	$filelog = $filelog . "What arrived and how many? ". $newline . $newline;
-	$filelog = $filelog . $arrivals . $newline . $newline;
-	$filelog = $filelog . "What did you do with it? ". $newline . $newline;
-	$filelog = $filelog . $happens . $newline . $newline;
+	
+	$filelog = $filelog . "Front Fridge ". $newline . $newline;
+	$filelog = $filelog . $whole . $whole_f . $newline . $newline;
+	$filelog = $filelog . $skim . $skim_f . $newline . $newline;
+	$filelog = $filelog . $soy . $soy_f . $newline . $newline;
+	
+	$filelog = $filelog . $break . $newline . $newline;
+	
+	$filelog = $filelog . "Back Fridge ". $newline . $newline;
+	$filelog = $filelog . $whole . $whole_b . $newline . $newline;
+	$filelog = $filelog . $skim . $skim_b . $newline . $newline;
+	$filelog = $filelog . $soy . $soy_b . $newline . $newline;
+	
+	$filelog = $filelog . $break . $newline . $newline;
+	
+	$filelog = $filelog . "Counter ". $newline . $newline;
+	$filelog = $filelog . "Reg Bean" . $regbean . $newline . $newline;
+	$filelog = $filelog . "Decaf Bean" . $decafbean . $newline . $newline;
+	
+	$filelog = $filelog . $break . $newline . $newline;
+	
 	$filelog = $filelog . "Comments and name: ". $newline . $newline;
 	$filelog = $filelog . $comments . $newline . $newline;
 	
@@ -66,7 +101,6 @@
 
 	echo $x;
 
-
 ?>
 
 <body>
@@ -79,7 +113,7 @@
 		</div><!-- /header -->
 
 		<div data-role="content" >	
-			<h2>Delivery Submission Status</h2>
+			<h2>Nightly Inventory Log Submission Status</h2>
 			
 			<?
 				if ($x == 1)
@@ -87,6 +121,9 @@
 				else
 					echo "<p>Email submission failed</p>";
 				
+				// echo $whole_f;
+				// echo $newline;
+			
 			?>
 			<p><a href="index.php" data-role="button" data-theme="d" data-ajax="false">Home</a></p>	
 		</div><!-- /content -->

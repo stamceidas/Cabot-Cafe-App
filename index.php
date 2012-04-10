@@ -2,15 +2,7 @@
 <?
 	session_start();
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-	//header("Location: #");
-	// sleep(3);
-	// if(isset($_SESSION['reloaded'])){
-		// $_SESSION['reloaded']=false; 
-	// } 
-	// else{ 
-		// $_SESSION['reloaded']=true; 
-		// header("Location: #");
-	// }
+	
 ?>
 
 <html>
@@ -58,46 +50,48 @@
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="d">	
-		<h3>Front Fridge</h3>
-			<h4> How many cartons left? </h4>
-			<form>
+		<form action="nightly.php" method="post" data-ajax="false">
+			<h3>Front Fridge</h3>
+				<h4> How many cartons left? </h4>
+				
 				<label for="whole-f">Whole Milk:</label>
 				<input type="range" name="whole-f" id="whole-f" value="10" min="0" max="20"  />
-			</form>
-			<form>
+			
 				<label for="skim-f">Skim Milk:</label>
 				<input type="range" name="skim-f" id="skim-f" value="10" min="0" max="20"  />
-			</form>
-			<form>
+			
 				<label for="soy-f">Soy Milk:</label>
 				<input type="range" name="soy-f" id="soy-f" value="10" min="0" max="20"  />
-			</form>
-		
-		<h3>Back Fridge</h3>
-			<h4> How many cartons left? </h4>
-			<form>
+				
+			<h3>Back Fridge</h3>
+				<h4> How many cartons left? </h4>
+				
 				<label for="whole-b">Whole Milk:</label>
 				<input type="range" name="whole-b" id="whole-b" value="10" min="0" max="20"  />
-			</form>
-			<form>
+			
 				<label for="skim-b">Skim Milk:</label>
 				<input type="range" name="skim-b" id="skim-b" value="10" min="0" max="20"  />
-			</form>
-			<form>
+			
 				<label for="soy-b">Soy Milk:</label>
 				<input type="range" name="soy-b" id="soy-b" value="10" min="0" max="20"  />
-			</form>
-		
-		<h3>Counter</h3>
-			<h4> How much of the bag is left?</h4>
-			<form>
+				
+			<h3>Counter</h3>
+				<h4> How much of the bag is left?</h4>
+			
 				<label for="regbean">Regular Beans:</label>
 				<input type="range" name="regbean" id="regbean" value="0.5" min="0" max="1" step="0.1"  />
-			</form>
-			<form>
+
 				<label for="decafbean">Decaf Beans:</label>
 				<input type="range" name="decafbean" id="decafbean" value="0.5" min="0" max="1" step="0.1"  />
-			</form>
+			
+			<h3>Misc </h3>	
+			
+				<label for="nightinventcomment">Comments and name:</label><br>
+				<textarea cols="40" rows="8" name="nightinventcomment" id="nightinventcomment"></textarea>
+				
+				
+				<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
+		</form>
 		
 		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
 		
