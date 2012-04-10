@@ -91,7 +91,7 @@
 	//generate email
 	
 	$to      = $receiver_email;
-	$subject = "[Cabot Cafe App] Delivery Log (".$date.")";
+	$subject = "[Cabot Cafe App] Nightly Inventory Log (".$date.")";
 	$message = $filelog;
 	$headers = 	'From:'. $sender_name. '<'.$sender_email.'>' . "\r\n" .
 				'Reply-To: '.$sender_email . "\r\n" .
