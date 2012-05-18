@@ -21,7 +21,7 @@
 
 <?
 
-	require_once("constants.php");
+	require_once("includes\constants.php");
 	
 	//pull post
 	$arrivals = htmlentities($_POST["arrivals_text"]);

@@ -1,0 +1,24 @@
+ADMIN MODEL
+id#
+name
+username
+password (hashed)
+email
+year
+
+EMPLOYEE MODEL
+id#
+name
+email
+year
+employee ID number
+
+ITEM MODEL
+-CATEGORY
+title
+-ITEM
+name
+range min
+range max
+slider increment
+category heading

@@ -1,8 +1,8 @@
 <?
 	/********************************************
-	* Nightly.php
+	* Weekly.php
 	*********************************************
-	* Handles the nightly inventory form 
+	* Handles the weekly inventory form 
 	* Generates submission log
 	* Emails receipt to manager
 	*********************************************/
@@ -121,9 +121,7 @@
 				else
 					echo "<p>Email submission failed</p>";
 				
-				// echo $whole_f;
-				// echo $newline;
-			
+
 			?>
 			<p><a href="index.php" data-role="button" data-theme="d" data-ajax="false">Home</a></p>	
 		</div><!-- /content -->

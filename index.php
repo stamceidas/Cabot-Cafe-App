@@ -110,9 +110,46 @@
 	</div><!-- /header -->
 
 	<div data-role="content" data-theme="d">	
-		<h2>Two</h2>
-		<p>I have an id of "two" on my page container. I'm the second page container in this multi-page template.</p>	
-		<p>Notice that the theme is different for this page because we've added a few <code>data-theme</code> swatch assigments here to show off how flexible it is. You can add any content or widget to these pages, but we're keeping these simple.</p>	
+		<form action="weekly.php" method="post" data-ajax="false">
+			<h3>Baked Goods</h3>
+
+				<label for="whole-f">Whole Milk:</label>
+				<input type="range" name="whole-f" id="whole-f" value="10" min="0" max="20"  />
+			
+				<label for="skim-f">Skim Milk:</label>
+				<input type="range" name="skim-f" id="skim-f" value="10" min="0" max="20"  />
+			
+				<label for="soy-f">Soy Milk:</label>
+				<input type="range" name="soy-f" id="soy-f" value="10" min="0" max="20"  />
+				
+			<h3>Back Fridge</h3>
+				
+				<label for="whole-b">Whole Milk:</label>
+				<input type="range" name="whole-b" id="whole-b" value="10" min="0" max="20"  />
+			
+				<label for="skim-b">Skim Milk:</label>
+				<input type="range" name="skim-b" id="skim-b" value="10" min="0" max="20"  />
+			
+				<label for="soy-b">Soy Milk:</label>
+				<input type="range" name="soy-b" id="soy-b" value="10" min="0" max="20"  />
+				
+			<h3>Counter</h3>
+			
+				<label for="regbean">Regular Beans:</label>
+				<input type="range" name="regbean" id="regbean" value="0.5" min="0" max="1" step="0.1"  />
+
+				<label for="decafbean">Decaf Beans:</label>
+				<input type="range" name="decafbean" id="decafbean" value="0.5" min="0" max="1" step="0.1"  />
+			
+			<h3>Misc </h3>	
+			
+				<label for="nightinventcomment">Comments and name:</label><br>
+				<textarea cols="40" rows="8" name="nightinventcomment" id="nightinventcomment"></textarea>
+				
+				
+				<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
+		</form>
+		
 		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
 		
 	</div><!-- /content -->
