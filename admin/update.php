@@ -20,15 +20,8 @@
 		<div align='center'>
 			Update Personal Information
 		</div>
-		<div id='menu'>
-			<a href='dashboard.php?logout'><b>Logout</b></a> ||
-			<a href='dashboard.php'>Dashboard</a> ||
-			<a href='users.php'>Manage Admins</a> ||
-			<a href='employees.php'>Manage Cafe Employees</a> ||
-			<a href='nightitems.php'>Manage Nightly Inventory Page</a> ||
-			<a href='weeklyitems.php'>Manage Weekly Inventory Page</a>
-		</div>
-		
+		<? navBar("update"); ?>
+
 		<form method="post" action="" id="info_form">			
 			<table cellpadding="5">
 			<tr>

@@ -25,14 +25,7 @@
 		<div align='center'>
 			Welcome to the Cabot Cafe Admin Dashboard!
 		</div>
-		<div id='menu'>
-			<a href='dashboard.php?logout'><b>Logout</b></a>
-			<a href='update.php'>Update Admin Info</a>
-			<? if ($_SESSION['sudo']) echo "<a href='users.php'>Manage Admins</a>"; ?>
-			<a href='employees.php'>Manage Cafe Employees</a>
-			<a href='nightitems.php'>Manage Nightly Inventory Page</a>
-			<a href='weeklyitems.php'>Manage Weekly Inventory Page</a>
-		</div>
+		<? navBar("dashboard");	?>
 		
 		
 		
