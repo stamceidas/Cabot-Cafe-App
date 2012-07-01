@@ -26,7 +26,7 @@
 			<table cellpadding="5">
 			<tr>
 				<td>Name</td>
-				<td><input name="name" type="text" id="name" value="<?echo $row['name'];?>"/></td>
+				<td><input name="name" type="text" id="name" value="<?echo $row['firstname'];?>"/></td>
 			</tr>
 			<tr>
 				<td>Username</td>

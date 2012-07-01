@@ -28,6 +28,19 @@
 	
 	}
 	
+	function isValid($x, $size){
+		if(empty($x))
+			return false;
+		if(strlen($x) < $size){
+			return false;
+		}
+		return true;
+	}
+	
+	function echoexit($status, $msg){
+		echo json_encode(array('status' => $status, 'msg' => $msg));
+		exit();
+	}
 	
 	/*******************************
 	* Function Index List
@@ -51,19 +64,46 @@
 		
 		global $params;
 		$params = json_decode($params, true);
-		var_dump($params);
+		//var_dump($params);
+		
+		if(empty($params['id'])){
+			
+			if(!isValid($params['username'], 8)){
+				echoexit('error',"Invalid username.");
+			}
+			if(!isValid($params['password'],8) ){
+				echoexit('error', 'Invalid password.');
+			}
+			if($params['password'] != $params['password2']){
+				echoexit('error',"Passwords don't match!");
+			}
+			if(!isValid($params['email'], 0)){
+				echoexit('error', "Invalid email.");
+			}
+			if($params['sudo'] == 'true'){
+				$params['sudo'] = 1;
+			}
+			else{
+				$params['sudo'] = 0;
+			}
+			
+			$values = "'" . strval($params['username']) . "','" 
+							. strval($params['firstname']) . "','"
+							. strval($params['lastname']) . "','"
+							. strval($params['password']) . "','"
+							. strval($params['email']) . "','"
+							. strval($params['sudo']) . "','"							
+							. strval($params['year']) . "'";
+		
+			if(mysql_query("INSERT INTO admin(username,firstname,lastname, password,email,sudo, year) VALUES ($values)"))
+				echoexit('success', "User created!");
+			else
+				echoexit('error', "Failed to create user!");
+		}
+		else{
 		
 		
-		$values = "'" . strval($params['username']) . "','" 
-						. strval($params['firstname']) . "','"
-						. strval($params['lastname']) . "','"
-						. strval($params['email']) . "','" 
-						. strval($params['year']) . "'";
-		echo $values;
-		if(mysql_query("INSERT INTO admin(username,firstname,lastname, email,year) VALUES ($values)"))
-			echo json_encode(array('flag' => 'success', 'msg' => "Created!"));
-		else
-			echo json_encode(array('flag' => 'error', 'msg' => "INSERT INTO admin(username,firstname,lastname, email,year) VALUES ($values)"));
+		}
 	}
 	
 

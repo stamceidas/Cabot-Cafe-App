@@ -14,7 +14,10 @@
     if (@mysql_select_db(DB_NAME, $connection) === FALSE)
         echo"Error: Could not select database (" . DB_NAME . ").";
 	
+	//start session to use on every page
 	session_start();
+	
+	
 	
     //generate password using md5 hash.
     //update to be salted with username, which is unique
@@ -25,7 +28,7 @@
         return $hash;
     }
 
-	
+	//generate navbar for each page
 	function navBar($page){
 	
 		echo "<div id='menu'>";

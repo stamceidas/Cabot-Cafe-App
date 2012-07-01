@@ -1,9 +1,11 @@
 <?
 	require_once("../includes/common.php");
+	
 	//if session not set, not logged in
 	if(empty($_SESSION['user'])){
 		header("Location:admin.php");
 	}
+	
 	//if logout then destroy the session and redirect the user
 	if(isset($_GET['logout'])){
 	  session_destroy();

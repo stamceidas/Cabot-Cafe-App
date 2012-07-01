@@ -26,7 +26,7 @@
 				echo "1";
 				//now set the session from here if needed
 				$_SESSION['user']=$row['username'];
-				$_SESSION['name']=$row['name'];
+				$_SESSION['firstname']=$row['firstname'];
 				$_SESSION['id'] = $row['id'];
 				$_SESSION['sudo'] = $row['sudo'];
 				

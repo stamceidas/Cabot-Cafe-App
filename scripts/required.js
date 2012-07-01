@@ -37,7 +37,7 @@ $(document).ready(function(){
 				  {
 					$("#loginmsg").html('Login failed');
 					// $("#loginmsg").html($('#username').val());
-					$("#loginmsg").html(data);
+					
 				  }	
 				});
 		return false; //not to post the form 
