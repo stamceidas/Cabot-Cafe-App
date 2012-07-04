@@ -35,6 +35,10 @@
 				background-color: white;
 				-moz-border-radius: ;
 			}
+			
+			#clear {overflow:hidden; clear:both;}
+			#add {float:left;}
+			#del {float: right;}
 		</style>	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
@@ -77,7 +81,13 @@
 						echo '<td>'.$row['email'].'</td>';
 						echo '<td>'.$row['year'].'</td>';
 						echo '<td>'.($row['sudo'] == 1 ? 'True':'False').'</td>';
-						echo '<td><a href="#" class="updateUserButton" name="'.$row['id'].'"><span class="ui-icon ui-icon-pencil"></span></td>';
+						echo '<td><div id="clear">';
+						echo '<a href="#" class="updateUserButton" name="'.$row['id'].'"><div id="add" class="ui-icon ui-icon-pencil"></div></a>';
+						if($_SESSION['id'] != $row['id'])
+							echo '<a href="#" class="deleteUserButton" name="'.$row['id'].'"><div id="del" class="ui-icon ui-icon-close"></div></a>';
+						else
+							echo '<div id="del" style="display:none"></div>';
+						echo '</div></td>';
 						echo '</tr>';
 					}	
 						
@@ -86,6 +96,9 @@
 				</table>
 			</div>
 			<div id="userDiag" style="display:none"><span>stuff</span></div>
+			<div>
+				<p> As admin, you can create new accounts, edit existing accounts, and delete all but your own account. </p>
+			</div>
 		<?
 		}
 		else

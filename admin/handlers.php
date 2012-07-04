@@ -66,6 +66,7 @@
 		$params = json_decode($params, true);
 		//var_dump($params);
 		
+		// creating a new user
 		if(empty($params['id'])){
 			
 			if(!isValid($params['username'], 8)){
@@ -101,9 +102,39 @@
 				echoexit('error', "Failed to create user!");
 		}
 		else{
-		
-		
+			//CASE 1: Admin editing another user
+			if($params['id'] != $_SESSION['id']){
+			
+				// check if editing password
+				if(isValid($params['password'])){
+					if($params['password'] != $params['password2']){
+						echoexit('error',"Passwords don't match!");
+					}
+					else{
+						$values = "'" . strval($params['firstname']) . "','"
+							. strval($params['lastname']) . "','"
+							. strval($params['password']) . "','"
+							. strval($params['email']) . "','"
+							. strval($params['sudo']) . "','"							
+							. strval($params['year']) . "'";
+					
+					}
+				}
+				else{
+					//just update all other information
+				
+				}
+			}
+			//CASE 2: Admin editing self
 		}
+	}
+	function delete_user(){
+		global $params;
+		$params = json_decode($params, true);
+		if(mysql_query("DELETE FROM admin WHERE id = '".$params['id']."'"))
+			echoexit('success', "User deleted!");
+		else
+			echoexit('error', "Failed to delete user!");
 	}
 	
 
@@ -120,6 +151,9 @@
 			break;
 		case 2:
 			update_user();
+			break;
+		case 3:
+			delete_user();
 			break;
 	}
 

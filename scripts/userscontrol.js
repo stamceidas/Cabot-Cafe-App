@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	$('#userDiag').dialog({ autoOpen: false, 
 							modal: true,
 							width: 500,
@@ -43,34 +42,51 @@ $(document).ready(function(){
 							}
 	});
 	
-	
-	
-
-	
-	
-	
-	
-	$('#addUserButton').click(openUserDiag());
+	$(".updateUserButton").on("click",openUserDiag);
+	$('.deleteUserButton').on("click",deleteUser);
 });
 
-function openUserDiag(){
+function deleteUser(){
 	
-	$(".updateUserButton").click(function()
-	{
+	if(confirm("Are you sure you want to delete this user?")){	
+		var paramsArray = { 
+			"id" : $(this).attr("name")
+		};
+			
 		$.ajax({
-			type: "POST",
-			url: "../admin/forms/userForm.php",
-			data: "id="+$(this).attr("name"),
+			type:"POST",
+			url: "../admin/handlers.php",
+			data: "func=3&params="+JSON.stringify(paramsArray),
 			dataType: 'json',
 			success: function(data){
-				$('#userDiag').html('');
-				$('#userDiag').html(data.form);
-				$('#userDiag').dialog('open');
+				if(data.status == 'success'){
+					alert(data.msg)
+					location.reload();
+				}
+				if(data.status == 'error'){
+					alert(data.msg);
+				}
 			},
 			error: function(data){
-				alert("Problem loading user form!");
+				alert("Problem loading form!");
 			}
 		});	
-	});
+	}
+}
 
+function openUserDiag(){
+	$.ajax({
+		type: "POST",
+		url: "../admin/forms/userForm.php",
+		data: "id="+$(this).attr("name"),
+		dataType: 'json',
+		success: function(data){
+			$('#userDiag').html('');
+			$('#userDiag').html(data.form);
+			$('#userDiag').dialog('open');
+		},
+		error: function(data){
+			alert("Problem loading user form!");
+		}
+	});	
 }
