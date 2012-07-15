@@ -20,7 +20,7 @@
 	<head>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
 		<script src="../scripts/required.js"></script>
-		<title>Cabot Cafe: <? print($_SESSION['name']."'s " ) ?> Dashboard </title>
+		<title>Cabot Cafe: <? print($_SESSION['firstname']."'s " ); ?> Dashboard </title>
 	</head>
 	
 	<body>

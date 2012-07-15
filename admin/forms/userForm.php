@@ -5,6 +5,10 @@
 	if(empty($_SESSION['user'])){
 		header("Location:admin.php");
 	}
+	if (!$_SESSION['sudo']){
+		echo json_encode(array('msg' => 'error', 'form' => "Error! You broke something!"));
+		exit();
+	}
 	
 	$userid=mysql_real_escape_string($_POST["id"]);
 	if(!empty($userid)){

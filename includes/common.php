@@ -32,7 +32,7 @@
 	function navBar($page){
 	
 		echo "<div id='menu'>";
-			echo	"<a href='dashboard.php?logout'><b>Logout</b></a> || ";
+			echo	"|| <a href='dashboard.php?logout'><b>Logout</b></a> || ";
 			if($page != "dashboard") echo "<a href='dashboard.php'>Dashboard</a> || ";
 			if($page != "update") echo "<a href='update.php'>Update Admin Info</a> || ";
 			if ($_SESSION['sudo']) echo "<a href='users.php'>Manage Admins</a> || ";

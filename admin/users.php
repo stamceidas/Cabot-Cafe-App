@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Manage Admins - Cabot Cafe App</title>
 		<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui-1.8.21.custom.css" media="screen" />
 		<style type="text/css">
 			table {
@@ -43,8 +44,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
 		<script src="../scripts/userscontrol.js" type="text/javascript"></script>
-		
-
 	</head>
 
 	<body>
