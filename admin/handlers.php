@@ -144,41 +144,42 @@
 	function delete_user(){
 		global $params;
 		$params = json_decode($params, true);
-		if(mysql_query("DELETE FROM items WHERE id = '".$params['id']."'"))
-			echoexit('success', "Item deleted!");
+		if(mysql_query("DELETE FROM admin WHERE id = '".$params['id']."'"))
+			echoexit('success', "User deleted!");
 		else
-			echoexit('error', "Failed to delete item!");
+			echoexit('error', "Failed to delete user!");
 	}
 	
 	function update_item(){
 		global $params;
 		$params = json_decode($params, true);
 		
-		if(!isValid($params['itemname'], 0)){
-			echoexit('error',"Invalid username.");
-		}
-		if(!isValid($params['location'],0) ){
-			echoexit('error', 'Invalid password.');
-		}
-		if(!isValid($params['minamt'], 0) || !is_numeric($params['minamt'])){
-			$params['minamt'] = DEFAULT_MIN;
-		}
-		if(!isValid($params['maxamt'], 0) || !is_numeric($params['maxamt'])){
-			$params['maxamt'] = DEFAULT_MAX;
-		}
-		if(!isValid($params['increment'], 0) || !is_numeric($params['increment'])){
-			$params['increment'] = DEFAULT_INCREMENT;
-		}
-		if(!isValid($params['measure_type'], 0) || !is_numeric($params['measure_type'])){
-			$params['measure_type'] = DEFAULT_MEASURETYPE;
-		}
-		if(!isValid($params['warning_limit'], 0) || !is_numeric($params['warning_limit'])){
-			$params['warning_limit'] = DEFAULT_WARNINGLIMIT;
-		}
-		
 		// creating a new item
 		if(empty($params['id'])){
-			
+			if(!isValid($params['itemname'], 0)){
+				echoexit('error',"Invalid item name.");
+			}
+			if(!isValid($params['location'],0) ){
+				echoexit('error', 'Invalid location.');
+			}
+			if(!isValid($params['minamt'], 0) || !is_numeric($params['minamt'])){
+				$params['minamt'] = DEFAULT_MIN;
+			}
+			if(!isValid($params['maxamt'], 0) || !is_numeric($params['maxamt'])){
+				$params['maxamt'] = DEFAULT_MAX;
+			}
+			if($params['maxamt'] <= $params['minamt']){
+				echoexit('error',"MAX can't be less than or equal to MIN!");
+			}
+			if(!isValid($params['increment'], 0) || !is_numeric($params['increment'])){
+				$params['increment'] = DEFAULT_INCREMENT;
+			}
+			if(!isValid($params['measure_type'], 0) || !is_numeric($params['measure_type'])){
+				$params['measure_type'] = DEFAULT_MEASURETYPE;
+			}
+			if(!isValid($params['warning_limit'], 0) || !is_numeric($params['warning_limit'])){
+				$params['warning_limit'] = DEFAULT_WARNINGLIMIT;
+			}
 			$values = "'" . strval($params['itemname']) . "','" 
 							. strval($params['location']) . "','"
 							. strval($params['minamt']) . "','"
@@ -200,11 +201,70 @@
 			}
 		}
 		else{
-		
+			//update the item
+			
+			// nightly inventory update
+			if($params['itemType'] == 'nightly'){
+				$sql="SELECT * FROM nightlyinventory WHERE id = {$params["id"]}";
+				$result=mysql_query($sql);
+				$row = mysql_fetch_array($result);
+				if($row['item_name'] != $params['itemname'])
+					$row['item_name'] = $params['itemname'];
+				if($row['location'] != $params['location'])
+					$row['location'] = $params['location'];
+				if(($row['min_amt'] != $params['minamt']) && is_numeric($params['minamt']))
+					$row['min_amt'] = $params['minamt'];
+				if(($row['max_amt'] != $params['maxamt']) && is_numeric($params['maxamt']))
+					$row['max_amt'] = $params['maxamt'];
+				if(($row['increment'] != $params['increment']) && is_numeric($params['increment']))
+					$row['increment'] = $params['increment'];
+				if($row['measure_type'] != $params['measure_type'])
+					$row['measure_type'] = $params['measure_type'];
+				if(($row['warning_limit'] != $params['warning_limit']) && is_numeric($params['warning_limit']))
+					$row['warning_limit'] = $params['warning_limit'];
+				
+				if(mysql_query("UPDATE nightlyinventory SET location = '{$row["location"]}', item_name = '{$row["location"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
+					echoexit('update_success', "Update successful!");
+				else
+					echoexit('error', "Update failed!");
+			}
+			// weekly inventory update
+			else if($params['itemType'] == 'weekly'){
+				$sql="SELECT * FROM weeklyinventory WHERE id = {$params["id"]}";
+				$result=mysql_query($sql);
+				$row = mysql_fetch_array($result);
+				if($row['item_name'] != $params['itemname'])
+					$row['item_name'] = $params['itemname'];
+				if($row['location'] != $params['location'])
+					$row['location'] = $params['location'];
+				if(($row['min_amt'] != $params['minamt']) && is_numeric($params['minamt']))
+					$row['min_amt'] = $params['minamt'];
+				if(($row['max_amt'] != $params['maxamt']) && is_numeric($params['maxamt']))
+					$row['max_amt'] = $params['maxamt'];
+				if(($row['increment'] != $params['increment']) && is_numeric($params['increment']))
+					$row['increment'] = $params['increment'];
+				if($row['measure_type'] != $params['measure_type'])
+					$row['measure_type'] = $params['measure_type'];
+				if(($row['warning_limit'] != $params['warning_limit']) && is_numeric($params['warning_limit']))
+					$row['warning_limit'] = $params['warning_limit'];
+				
+				if(mysql_query("UPDATE weeklyinventory SET location = '{$row["location"]}', item_name = '{$row["location"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
+					echoexit('update_success', "Update successful!");
+				else
+					echoexit('error', "Update failed!");
+			}
+			
+			
 		}
 	}
-	function delete_item(){
 	
+	function delete_item(){
+		global $params;
+		$params = json_decode($params, true);
+		if(mysql_query("DELETE FROM nightlyinventory WHERE id = '".$params['id']."'"))
+			echoexit('success', "Item deleted!");
+		else
+			echoexit('error', "Failed to delete item!");
 	}
 	
 
