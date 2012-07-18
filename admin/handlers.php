@@ -79,15 +79,10 @@
 		$params = json_decode($params, true);
 		//var_dump($params);
 		
-		if(!isValid($params['username'], 8)){
+		if(!isValid($params['username'], 0)){
 			echoexit('error',"Invalid username.");
 		}
-		if(!isValid($params['password'],8) ){
-			echoexit('error', 'Invalid password.');
-		}
-		if($params['password'] != $params['password2']){
-			echoexit('error',"Passwords don't match!");
-		}
+		
 		if(!isValid($params['email'], 0)){
 			echoexit('error', "Invalid email.");
 		}
@@ -100,7 +95,14 @@
 		
 		// creating a new user
 		if(empty($params['id'])){
-			
+			if(!isValid($params['password'],8) ){
+			echoexit('error', 'Invalid password.');
+			}
+			if($params['password'] != $params['password2']){
+				echoexit('error',"Passwords don't match!");
+			}
+
+		
 			$values = "'" . strval($params['username']) . "','" 
 							. strval($params['firstname']) . "','"
 							. strval($params['lastname']) . "','"
@@ -119,26 +121,47 @@
 			if($params['id'] != $_SESSION['id']){
 			
 				// check if editing password
-				if(isValid($params['password'])){
+				if(isValid($params['password'],8)){
 					if($params['password'] != $params['password2']){
 						echoexit('error',"Passwords don't match!");
 					}
 					else{
-						$values = "'" . strval($params['firstname']) . "','"
-							. strval($params['lastname']) . "','"
-							. strval($params['password']) . "','"
-							. strval($params['email']) . "','"
-							. strval($params['sudo']) . "','"							
-							. strval($params['year']) . "'";
-					
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', password = '{$params["password"]}', year = '{$params["year"]}' WHERE id = {$params["id"]}"))
+							echoexit('update_success', "Update successful! Information and Password changed!");
+						else
+							echoexit('error', "Update failed!");
 					}
 				}
 				else{
 					//just update all other information
-				
+					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', year = '{$params["year"]}' WHERE id = {$params["id"]}"))
+							echoexit('update_success', "Update successful! Information changed!");
+						else
+							echoexit('error', "Update failed!");
 				}
 			}
 			//CASE 2: Admin editing self
+			else{
+				// check if editing password
+				if(isValid($params['password'],8)){
+					if($params['password'] != $params['password2']){
+						echoexit('error',"Passwords don't match!");
+					}
+					else{
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', password = '{$params["password"]}', year = '{$params["year"]}' WHERE id = {$params["id"]}"))
+							echoexit('update_success', "Update successful! Information and Password changed!");
+						else
+							echoexit('error', "Update failed!");
+					}
+				}
+				else{
+					//just update all other information
+					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', year = '{$params["year"]}' WHERE id = {$params["id"]}"))
+							echoexit('update_success', "Update successful! Information changed!");
+						else
+							echoexit('error', "Update failed!");
+				}
+			}
 		}
 	}
 	function delete_user(){
@@ -261,10 +284,18 @@
 	function delete_item(){
 		global $params;
 		$params = json_decode($params, true);
-		if(mysql_query("DELETE FROM nightlyinventory WHERE id = '".$params['id']."'"))
-			echoexit('success', "Item deleted!");
-		else
-			echoexit('error', "Failed to delete item!");
+		if($params['itemType'] == 'nightly'){
+			if(mysql_query("DELETE FROM nightlyinventory WHERE id = '".$params['id']."'"))
+				echoexit('success', "Item deleted!");
+			else
+				echoexit('error', "Failed to delete item!");
+		}
+		else if($params['itemType'] == 'weekly'){
+			if(mysql_query("DELETE FROM weeklyinventory WHERE id = '".$params['id']."'"))
+				echoexit('success', "Item deleted!");
+			else
+				echoexit('error', "Failed to delete item!");
+		}
 	}
 	
 

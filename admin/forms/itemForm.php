@@ -7,8 +7,12 @@
 	}
 	
 	$itemid=mysql_real_escape_string($_POST["id"]);
+	$itemtype=mysql_real_escape_string($_POST["itemType"]);
 	if(!empty($itemid)){
-		$sql="SELECT * FROM nightlyinventory WHERE id='".$itemid."'";
+		if($itemtype == "nightly")
+			$sql="SELECT * FROM nightlyinventory WHERE id='".$itemid."'";
+		else if ($itemtype == "weekly")
+			$sql="SELECT * FROM weeklyinventory WHERE id='".$itemid."'";
 		$result=mysql_query($sql);
 		$row = mysql_fetch_array($result);
 		// create form with item's information

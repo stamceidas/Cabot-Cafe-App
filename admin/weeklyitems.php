@@ -2,7 +2,7 @@
 
 	require_once("../includes/common.php");
 
-	$sql="SELECT * FROM nightlyinventory ORDER BY location";
+	$sql="SELECT * FROM weeklyinventory ORDER BY location";
 	$result=mysql_query($sql);
 	
 ?>
@@ -13,7 +13,7 @@
 <html>
 	<head>
 		
-		<title>Nightly Inventory: Cabot Cafe App</title>
+		<title>Weekly Inventory: Cabot Cafe App</title>
 		<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui-1.8.21.custom.css" media="screen" />
 		<style type="text/css">
 			table {
@@ -63,7 +63,7 @@
 		<div id = "items">
 			<table>
 				<tr>
-					<th colspan="8"> Cabot Cafe Nightly Inventory List </th>
+					<th colspan="8"> Cabot Cafe Weekly Inventory List </th>
 				</tr>
 				<tr>
 					<th> Location </th>
@@ -97,7 +97,7 @@
 			</table>
 		</div>
 		<div id="itemDiag" style="display:none"><span>stuff</span></div>
-		<div id="inventoryFlag" name="nightly" style="display:none"><span>If this span appears, something broke somewhere.</span></div>
+		<div id="inventoryFlag" name="weekly" style="display:none"><span>If this span appears, something broke somewhere.</span></div>
 	
 	</body>
 

@@ -14,7 +14,7 @@ $(document).ready(function(){
 											 "increment" : $('#increment').val(), 
 											 "measure_type" : $('#measure_type').val(),
 											 "warning_limit" : $('#warning_limit').val(),
-											 "itemType":"nightly"
+											 "itemType":$("#inventoryFlag").attr("name")
 										};
 										
 										$.ajax({
@@ -54,7 +54,8 @@ function deleteItem(){
 	
 	if(confirm("Are you sure you want to delete this item?")){	
 		var paramsArray = { 
-			"id" : $(this).attr("name")
+			"id" : $(this).attr("name"),
+			"itemType":$("#inventoryFlag").attr("name")
 		};
 			
 		$.ajax({
@@ -83,7 +84,7 @@ function openItemDiag(){
 	$.ajax({
 		type: "POST",
 		url: "../admin/forms/itemForm.php",
-		data: "id="+$(this).attr("name"),
+		data: "itemType="+$("#inventoryFlag").attr("name")+"&id="+$(this).attr("name"),
 		dataType: 'json',
 		success: function(data){
 			$('#itemDiag').html('');
