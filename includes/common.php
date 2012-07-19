@@ -35,7 +35,8 @@
 			echo	"|| <a href='dashboard.php?logout'><b>Logout</b></a> || ";
 			if($page != "dashboard") echo "<a href='dashboard.php'>Dashboard</a> || ";
 			if($page != "update") echo "<a href='update.php'>Update Admin Info</a> || ";
-			if ($_SESSION['sudo']) echo "<a href='users.php'>Manage Admins</a> || ";
+			//if ($_SESSION['sudo']) echo "<a href='users.php'>Manage Admins</a> || ";
+			if($page != "users")echo "<a href='users.php'>Manage Admins</a> || ";
 			if($page != "employees") echo "<a href='employees.php'>Manage Cafe Employees</a> || ";
 			if($page != "nightitems") echo "<a href='nightitems.php'>Manage Nightly Inventory Page</a> || ";
 			if($page != "weeklyitems") echo "<a href='weeklyitems.php'>Manage Weekly Inventory Page</a> || ";

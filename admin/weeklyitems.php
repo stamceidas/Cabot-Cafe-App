@@ -5,6 +5,11 @@
 	$sql="SELECT * FROM weeklyinventory ORDER BY location";
 	$result=mysql_query($sql);
 	
+	//if session not set, not logged in
+	if(empty($_SESSION['user'])){
+		header("Location:admin.php");
+	}
+	
 ?>
 
 
@@ -53,7 +58,7 @@
 	
 	<body>
 		
-		<? navBar("dashboard");	?>
+		<? navBar("weeklyitems");	?>
 		
 		<!-- TEMPORARY SPACING -->
 		<br />

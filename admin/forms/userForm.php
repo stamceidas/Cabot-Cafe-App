@@ -5,10 +5,10 @@
 	if(empty($_SESSION['user'])){
 		header("Location:admin.php");
 	}
-	if (!$_SESSION['sudo']){
-		echo json_encode(array('msg' => 'error', 'form' => "Error! You broke something!"));
-		exit();
-	}
+	// if (!$_SESSION['sudo']){
+		// echo json_encode(array('msg' => 'error', 'form' => "Error! You broke something!"));
+		// exit();
+	// }
 	
 	$userid=mysql_real_escape_string($_POST["id"]);
 	if(!empty($userid)){
@@ -20,6 +20,9 @@
 		if($row['sudo'] == 1){
 			$isSudo = 'checked';
 		}
+		if (!$_SESSION['sudo']){
+			$isSudo = $isSudo . 'style="display:none"';
+		}
 		
 		$formStr = '<form id="userform" name="'.$userid.'"><table>'
 					.'<tr><td id="label">Username:</td><td id="field"><input type="text" id="username" value="'.$row['username'].'" readonly/></td></tr>'
@@ -29,6 +32,7 @@
 					.'<tr><td id="label">Last Name: </td><td id="field"><input type="text" id="lastname" value="'.$row['lastname'].'"/></td></tr>'
 					.'<tr><td id="label">Email: </td><td id="field"><input type="text" id="email" value="'.$row['email'].'"/></td></tr>'
 					.'<tr><td id="label">Year: </td><td id="field"><input type="text" id="year" value="'.$row['year'].'"/></td></tr>'
+					.'<tr><td id="label">PIN: </td><td id="field"><input type="text" id="pin" value="'.$row['PIN'].'"/></td></tr>'
 					.'<tr><td><input type="checkbox" id="sudo" value="true" '.$isSudo.'/> Super Admin</td></tr>'
 					.'</table>'
 					.'* Super Admins can manage Cafe Dashboard users.'
@@ -47,6 +51,7 @@
 					.'<tr><td id="label">Last Name: </td><td id="field"><input type="text" id="lastname" /></td></tr>'
 					.'<tr><td id="label">Email: </td><td id="field"><input type="text" id="email"/></td></tr>'
 					.'<tr><td id="label">Year: </td><td id="field"><input type="text" id="year"/></td></tr>'
+					.'<tr><td id="label">PIN: </td><td id="field"><input type="text" id="pin"/></td></tr>'
 					.'<tr><td><input type="checkbox" id="sudo" value="true" /> Super Admin</td></tr>'
 					.'</table>'
 					.'* Super Admins can manage Cafe Dashboard users.'

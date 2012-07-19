@@ -1,6 +1,11 @@
 <?
 	require_once("../includes/common.php");
 	
+	//if session not set, not logged in
+	if(empty($_SESSION['user'])){
+		header("Location:admin.php");
+	}
+	
 	$sql="SELECT * FROM admin";
 	$result=mysql_query($sql);
 	
@@ -47,16 +52,19 @@
 	</head>
 
 	<body>
-		<? navBar("dashboard");	?>
-		<?
-			if ($_SESSION['sudo'])
-		{
-		?>
+		<? navBar("users");	?>
 			<!-- TEMPORARY SPACING -->
 			<br />
 			<br />
 			<br />
-			<a href="#" class="updateUserButton" name="">Create new Admin</a>
+			<?
+			if ($_SESSION['sudo'])
+			{
+			?>
+				<a href="#" class="updateUserButton" name="">Create new Admin</a>
+			<?
+			}
+			?>
 			<div id = "users">
 				<table>
 					<tr>
@@ -80,13 +88,25 @@
 						echo '<td>'.$row['email'].'</td>';
 						echo '<td>'.$row['year'].'</td>';
 						echo '<td>'.($row['sudo'] == 1 ? 'True':'False').'</td>';
-						echo '<td><div id="clear">';
-						echo '<a href="#" class="updateUserButton" name="'.$row['id'].'"><div id="add" class="ui-icon ui-icon-pencil"></div></a>';
-						if($_SESSION['id'] != $row['id'])
-							echo '<a href="#" class="deleteUserButton" name="'.$row['id'].'"><div id="del" class="ui-icon ui-icon-close"></div></a>';
-						else
-							echo '<div id="del" style="display:none"></div>';
-						echo '</div></td>';
+						echo '<td>';
+						if ($_SESSION['sudo']){
+							echo '<div id="clear">';
+							echo '<a href="#" class="updateUserButton" name="'.$row['id'].'"><div id="add" class="ui-icon ui-icon-pencil"></div></a>';
+							if($_SESSION['id'] != $row['id'])
+								echo '<a href="#" class="deleteUserButton" name="'.$row['id'].'"><div id="del" class="ui-icon ui-icon-close"></div></a>';
+							else
+								echo '<div id="del" style="display:none"></div>';
+							echo '</div>';
+						}
+						else{
+							if($_SESSION['id'] == $row['id']){
+								echo '<div id="clear">';
+								echo '<a href="#" class="updateUserButton" name="'.$row['id'].'"><div id="add" class="ui-icon ui-icon-pencil"></div></a>';
+								echo '<div id="del" style="display:none"></div>';
+								echo '</div>';
+							}
+						}
+						echo '</td>';
 						echo '</tr>';
 					}	
 						
@@ -95,6 +115,12 @@
 				</table>
 			</div>
 			<div id="userDiag" style="display:none"><span>stuff</span></div>
+		<?
+			if ($_SESSION['sudo'])
+		{
+		?>
+
+
 			<div>
 				<p> As admin, you can create new accounts, edit existing accounts, and delete all but your own account. </p>
 			</div>
@@ -103,7 +129,7 @@
 		else
 		{
 		?>
-			<p> You don't have priviledge to edit users!</p>
+			<p> As a user, you can only update your own information. </p>
 		<?
 		}
 		?>

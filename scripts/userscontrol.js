@@ -14,6 +14,7 @@ $(document).ready(function(){
 											 "lastname" : $('#lastname').val(), 
 											 "email" : $('#email').val(),
 											 "year" : $('#year').val(),
+											 "pin" : $('#pin').val(),
 											 "sudo" : $('#sudo').is(':checked') ? $('#sudo').val() : ''
 										};
 										
