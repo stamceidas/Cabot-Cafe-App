@@ -18,8 +18,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="../css/smoothness/jquery-ui-1.8.21.custom.css" media="screen" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
 		<script src="../scripts/required.js"></script>
+		<script src="../scripts/userscontrol.js" type="text/javascript"></script>
 		<title>Cabot Cafe: <? print($_SESSION['firstname']."'s " ); ?> Dashboard </title>
 	</head>
 	

@@ -54,6 +54,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
 		<script src="../scripts/required.js"></script>
 		<script src="../scripts/itemscontrol.js" type="text/javascript"></script>
+		<script src="../scripts/userscontrol.js" type="text/javascript"></script>
 	</head>
 	
 	<body>

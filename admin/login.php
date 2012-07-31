@@ -21,7 +21,9 @@
 	if(mysql_num_rows($result)>0)
 	{
 			//compare the password
-			if(strcmp($row['password'],$pass)==0)
+			//if(strcmp($row['password'],$pass)==0)
+			
+			if(strcmp($row['password'],passGen($pass,$row['salt']))==0)
 			{
 				echo "1";
 				//now set the session from here if needed

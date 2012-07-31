@@ -1,6 +1,8 @@
 <!DOCTYPE html> 
 <?
-	session_start();
+	if(session_id() == ''){
+		session_start();
+	}
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 	
 ?>

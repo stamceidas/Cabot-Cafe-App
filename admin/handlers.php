@@ -62,7 +62,7 @@
 	 * 5 - delete_item()
 	 *******************************/
 	
-	
+	// this function should be replaced with users form mvc
 	function update_self_admin(){
 		
 		global $params;
@@ -102,19 +102,25 @@
 				echoexit('error',"Passwords don't match!");
 			}
 			if(!isValid($params['pin'],4) || !is_numeric($params['pin'])){
-				echoexit('error',"Bad PIN!");
+				//echoexit('error',"Bad PIN!");
+				$params['pin'] = 0;
 			}
-		
+			
+			// hash the user password with new random salt
+			$userSalt = strval(genSalt());
+			$encryptedPassword = passGen($params['password'],$userSalt);
+			
 			$values = "'" . strval($params['username']) . "','" 
 							. strval($params['firstname']) . "','"
 							. strval($params['lastname']) . "','"
-							. strval($params['password']) . "','"
+							. strval($encryptedPassword) . "','"
 							. strval($params['email']) . "','"
 							. strval($params['sudo']) . "','"
-							. strval($params['year']) . "','"							
+							. strval($params['year']) . "','"
+							. $userSalt . "','"							
 							. strval($params['pin']) . "'";
 		
-			if(mysql_query("INSERT INTO admin(username,firstname,lastname, password,email,sudo, year, PIN) VALUES ($values)"))
+			if(mysql_query("INSERT INTO admin(username,firstname,lastname, password,email,sudo, year, salt,PIN) VALUES ($values)"))
 				echoexit('success', "User created!");
 			else
 				echoexit('error', "Failed to create user!");
@@ -129,7 +135,9 @@
 						echoexit('error',"Passwords don't match!");
 					}
 					else{
-						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', password = '{$params["password"]}', year = '{$params["year"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+						$userSalt = strval(genSalt());
+						$encryptedPassword = passGen($params['password'],$userSalt);
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information and Password changed!");
 						else
 							echoexit('error', "Update failed!");
@@ -151,7 +159,9 @@
 						echoexit('error',"Passwords don't match!");
 					}
 					else{
-						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', password = '{$params["password"]}', year = '{$params["year"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+						$userSalt = strval(genSalt());
+						$encryptedPassword = passGen($params['password'],$userSalt);
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information and Password changed!");
 						else
 							echoexit('error', "Update failed!");
