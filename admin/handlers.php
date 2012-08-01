@@ -311,7 +311,37 @@
 		}
 	}
 	
-
+	function pin_verify(){
+		global $params;
+		$params = json_decode($params, true);
+		
+		if($params['pin'] == 0){
+			echoexit('error', "You are not authorized to use this app!");
+		}
+		
+		$sql="SELECT * FROM admin WHERE pin='".$params['pin']."'";
+		$result=mysql_query($sql);
+		$row = mysql_fetch_array($result);
+		
+		if(mysql_num_rows($result)==1){
+			//now set the session from here if needed
+			$_SESSION['user']=$row['username'];
+			$_SESSION['firstname']=$row['firstname'];
+			$_SESSION['lastname']=$row['lastname'];
+			$_SESSION['id'] = $row['id'];
+			$_SESSION['pin'] = $row['PIN'];
+			echoexit('success', "Authentication successful!");
+		
+		}
+		else if (mysql_num_rows($result)>1){
+			echoexit('error','There are multiple employees with that ID! Please contact cafe managers!');
+		}
+		else{
+			echoexit('error','Invalid PIN. Please try again.');
+		}
+	
+	}
+	
 	//clean the strings out
 	escape_array();
 
@@ -335,6 +365,10 @@
 		case 5:
 			delete_item();
 			break;
+		case 6:
+			pin_verify();
+			break;
+			
 	}
 
 	
