@@ -341,6 +341,53 @@
 		}
 	
 	}
+
+	function get_inv_form(){
+		global $params;
+		$params = json_decode($params, true);
+		
+		$test["a"] = "item a";
+		$test["b"] = "item b";
+		
+		$testjson = json_encode($test);
+
+		echoexit('error', $testjson);
+		
+		if($params['formtype'] == "nightly"){
+			$sql="SELECT * FROM nightlyinventory order by location asc";
+			$result=mysql_query($sql);
+			$row = mysql_fetch_array($result);
+		
+		}
+		else if($params['formtype'] == "weekly"){
+		
+		}
+		else if($params['formtype'] == "deliveries"){
+		
+		}
+		
+		$sql="SELECT * FROM admin WHERE pin='".$params['pin']."'";
+		$result=mysql_query($sql);
+		$row = mysql_fetch_array($result);
+		
+		if(mysql_num_rows($result)==1){
+			//now set the session from here if needed
+			$_SESSION['user']=$row['username'];
+			$_SESSION['firstname']=$row['firstname'];
+			$_SESSION['lastname']=$row['lastname'];
+			$_SESSION['id'] = $row['id'];
+			$_SESSION['pin'] = $row['PIN'];
+			echoexit('success', "Authentication successful!");
+		
+		}
+		else if (mysql_num_rows($result)>1){
+			echoexit('error','There are multiple employees with that ID! Please contact cafe managers!');
+		}
+		else{
+			echoexit('error','Invalid PIN. Please try again.');
+		}
+	
+	}
 	
 	//clean the strings out
 	escape_array();
@@ -367,6 +414,9 @@
 			break;
 		case 6:
 			pin_verify();
+			break;
+		case 7:
+			get_inv_form();
 			break;
 			
 	}
