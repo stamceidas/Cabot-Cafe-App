@@ -52,6 +52,74 @@
 		exit();
 	}
 	
+	function create_log_file($filename, $items_array, $type){
+		$filehandle =  fopen($filename, 'w') or die("Log could not be generated. Reconnect to wifi and try again.");
+		
+		$date = date("Ymd");
+		$time = date("Gi");
+		
+		$newline = "\n";
+		$break = "=================================";
+		$sep = ",";
+		
+		$datecreated = "Date Created: " . $date . $newline;
+		$timecreated = "Time Created: " . $time . $newline;
+		
+		if($type == 'nightly')
+			$filelog = "Nightly Inventory Log" . $newline . $newline;
+		else if($type == 'weekly')
+			$filelog = "Weekly Inventory Log" . $newline . $newline;
+		
+		$filelog = $filelog . $datecreated . $timecreated . $break . $newline . $newline;
+		
+		fwrite($filehandle,$filelog);
+		
+		$namesStr = '';
+		$valuesStr = '';
+		
+		// parse through item array and store names and values
+		foreach($items_array as $item){
+			$namesStr = $namesStr . $item['name'] . $sep;
+			$valuesStr = $valuesStr . $item['value'] . $sep;
+		}
+		
+		fwrite($filehandle, $namesStr.$newline);
+		fwrite($filehandle, $valuesStr);
+		
+		fclose($filehandle);
+		
+		return true;
+		
+	}
+	
+	
+	function generate_mail($type){
+		
+		$date = date("Ymd");
+		$time = date("Gi");
+		
+		$receiver_email = 'saagar.deshpande.nj@gmail.com';
+		$sender_email = 'saagar.deshpande.nj@gmail.com';
+		$sender_name = 'Saagar';
+		
+		$msg = "File was submitted by user: <>. Download it here!";
+		
+		
+		$to      = $receiver_email;
+		if($type == 'nightly')
+			$subject = "[Cabot Cafe App] Nightly Inventory Log (".$date.")";
+		else if($type == 'weekly')
+			$subject = "[Cabot Cafe App] Weekly Inventory Log (".$date.")";
+		$message = $msg;
+		$headers = 	'From:'. $sender_name. '<'.$sender_email.'>' . "\r\n" .
+					'Reply-To: '.$sender_email . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+
+		//$x = mail($to, $subject, $message, $headers);
+		$x = 1;
+		return $x;
+	}
+	
 	/*******************************
 	 * Function Index List
 	 * 
@@ -60,6 +128,8 @@
 	 * 3 - delete_user()
 	 * 4 - update_item()
 	 * 5 - delete_item()
+	 * 6 - pin_verify()
+	 * 7 - get_inv_form()
 	 *******************************/
 	
 	// this function should be replaced with users form mvc
@@ -346,18 +416,48 @@
 		global $params;
 		$params = json_decode($params, true);
 		
-		$test["a"] = "item a";
-		$test["b"] = "item b";
+		// $test["a"] = "item a";
+		// $test["b"] = "item b";
 		
-		$testjson = json_encode($test);
+		// $testjson = json_encode($test);
 
-		echoexit('error', $testjson);
+		// echoexit('error', $testjson);
 		
 		if($params['formtype'] == "nightly"){
+			// $sql="SELECT location FROM nightlyinventory order by location asc";
+			// $result = mysql_query($sql);
+			
+			$location = '';
+			$itemform = '<form id="target" action="nightly.php" method="post" data-ajax="false">';
+			
 			$sql="SELECT * FROM nightlyinventory order by location asc";
 			$result=mysql_query($sql);
-			$row = mysql_fetch_array($result);
-		
+			//$row = mysql_fetch_array($result);
+			
+			while($row = mysql_fetch_array($result)){
+				
+				if(strcmp($location,$row['location']) != 0){
+					$location = $row['location'];
+					$itemform = $itemform . '<h3>'.$row['location'].'</h3>';
+				}
+				
+				$itemform = $itemform . '<div data-role="fieldcontain">';
+				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
+				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
+				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
+				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['min_amt'].'" type="tel">';
+				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
+				$itemform = $itemform . '</div>';
+				
+			
+			}
+			$itemform = $itemform . '<a href="#" id="nightlySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
+			//$itemform = $itemform . '<button type="submit" data-theme="e" name="submit" value="submit-value" >Submit PHP</button>';
+			$itemform = $itemform . '</form>';
+			
+			$formjson = json_encode($itemform);
+			echoexit('success',$itemform);
+			
 		}
 		else if($params['formtype'] == "weekly"){
 		
@@ -389,6 +489,28 @@
 	
 	}
 	
+	function submit_inv_form(){
+		global $params;
+		$params = json_decode($params, true);
+		
+		//var_dump($params);
+		
+		$date = date("Ymd");
+		$time = date("Gi");
+		
+		//generate log
+		$filename = "../nightly_logs/nightly_log_".$date."_".$time.".csv";
+		
+		create_log_file($filename, $params, 'nightly');
+		
+		$x = generate_mail('nightly');
+		
+		if ($x == 1)
+			echoexit("success", "Email submission successful!");
+		else
+			echoexit("error", "Email submission failed!");
+	}
+	
 	//clean the strings out
 	escape_array();
 
@@ -418,6 +540,11 @@
 		case 7:
 			get_inv_form();
 			break;
+		case 8:
+			submit_inv_form();
+			break;
+		default:
+			echoexit("error", "Error! Unspecified action!");
 			
 	}
 

@@ -23,19 +23,23 @@
 
 	require_once("includes\constants.php");
 	
+	//receive data
+	$params = json_decode($_POST["params"], true);
+	var_dump($params);
+	
 	//pull post
-	$whole_f = htmlentities($_POST["whole-f"]);
-	$skim_f = htmlentities($_POST["skim-f"]);
-	$soy_f = htmlentities($_POST["soy-f"]);
+	// $whole_f = htmlentities($_POST["whole-f"]);
+	// $skim_f = htmlentities($_POST["skim-f"]);
+	// $soy_f = htmlentities($_POST["soy-f"]);
 	
-	$whole_b = htmlentities($_POST["whole-b"]);
-	$skim_b = htmlentities($_POST["skim-b"]);
-	$soy_b = htmlentities($_POST["soy-b"]);
+	// $whole_b = htmlentities($_POST["whole-b"]);
+	// $skim_b = htmlentities($_POST["skim-b"]);
+	// $soy_b = htmlentities($_POST["soy-b"]);
 	
-	$regbean = htmlentities($_POST["regbean"]);
-	$decafbean = htmlentities($_POST["decafbean"]);
+	// $regbean = htmlentities($_POST["regbean"]);
+	// $decafbean = htmlentities($_POST["decafbean"]);
 	
-	$comments = htmlentities($_POST["nightinventcomment"]);
+	// $comments = htmlentities($_POST["nightinventcomment"]);
 	
 	//var_dump($_POST);
 
@@ -51,53 +55,54 @@
 	
 	//generate log
 	$filename = "nightly_logs/nightly_log_".$date."_".$time.".txt";
-	$filehandle =  fopen($filename, 'w') or die("Log could not be generated. Reconnect to wifi and try again.");
 	
-	$datecreated = "Date Created: " . $date . $newline;
-	$timecreated = "Time Created: " . $time . $newline;
+	// $filehandle =  fopen($filename, 'w') or die("Log could not be generated. Reconnect to wifi and try again.");
+	
+	// $datecreated = "Date Created: " . $date . $newline;
+	// $timecreated = "Time Created: " . $time . $newline;
 	
 
 	
-	$filelog = "Nightly Inventory Log" . $newline . $newline;
-	$filelog = $filelog . $datecreated . $timecreated . $break . $newline . $newline;
+	// $filelog = "Nightly Inventory Log" . $newline . $newline;
+	// $filelog = $filelog . $datecreated . $timecreated . $break . $newline . $newline;
 	
-	$filelog = $filelog . "Front Fridge ". $newline . $newline;
-	$filelog = $filelog . $whole . $whole_f . $newline . $newline;
-	$filelog = $filelog . $skim . $skim_f . $newline . $newline;
-	$filelog = $filelog . $soy . $soy_f . $newline . $newline;
+	// $filelog = $filelog . "Front Fridge ". $newline . $newline;
+	// $filelog = $filelog . $whole . $whole_f . $newline . $newline;
+	// $filelog = $filelog . $skim . $skim_f . $newline . $newline;
+	// $filelog = $filelog . $soy . $soy_f . $newline . $newline;
 	
-	$filelog = $filelog . $break . $newline . $newline;
+	// $filelog = $filelog . $break . $newline . $newline;
 	
-	$filelog = $filelog . "Back Fridge ". $newline . $newline;
-	$filelog = $filelog . $whole . $whole_b . $newline . $newline;
-	$filelog = $filelog . $skim . $skim_b . $newline . $newline;
-	$filelog = $filelog . $soy . $soy_b . $newline . $newline;
+	// $filelog = $filelog . "Back Fridge ". $newline . $newline;
+	// $filelog = $filelog . $whole . $whole_b . $newline . $newline;
+	// $filelog = $filelog . $skim . $skim_b . $newline . $newline;
+	// $filelog = $filelog . $soy . $soy_b . $newline . $newline;
 	
-	$filelog = $filelog . $break . $newline . $newline;
+	// $filelog = $filelog . $break . $newline . $newline;
 	
-	$filelog = $filelog . "Counter ". $newline . $newline;
-	$filelog = $filelog . "Reg Bean" . $regbean . $newline . $newline;
-	$filelog = $filelog . "Decaf Bean" . $decafbean . $newline . $newline;
+	// $filelog = $filelog . "Counter ". $newline . $newline;
+	// $filelog = $filelog . "Reg Bean" . $regbean . $newline . $newline;
+	// $filelog = $filelog . "Decaf Bean" . $decafbean . $newline . $newline;
 	
-	$filelog = $filelog . $break . $newline . $newline;
+	// $filelog = $filelog . $break . $newline . $newline;
 	
-	$filelog = $filelog . "Comments and name: ". $newline . $newline;
-	$filelog = $filelog . $comments . $newline . $newline;
+	// $filelog = $filelog . "Comments and name: ". $newline . $newline;
+	// $filelog = $filelog . $comments . $newline . $newline;
 	
-	fwrite($filehandle,$filelog);
+	// fwrite($filehandle,$filelog);
 	
-	fclose($filehandle);
+	// fclose($filehandle);
 	
-	//generate email
+	// //generate email
 	
-	$to      = $receiver_email;
-	$subject = "[Cabot Cafe App] Nightly Inventory Log (".$date.")";
-	$message = $filelog;
-	$headers = 	'From:'. $sender_name. '<'.$sender_email.'>' . "\r\n" .
-				'Reply-To: '.$sender_email . "\r\n" .
-				'X-Mailer: PHP/' . phpversion();
+	// $to      = $receiver_email;
+	// $subject = "[Cabot Cafe App] Nightly Inventory Log (".$date.")";
+	// $message = $filelog;
+	// $headers = 	'From:'. $sender_name. '<'.$sender_email.'>' . "\r\n" .
+				// 'Reply-To: '.$sender_email . "\r\n" .
+				// 'X-Mailer: PHP/' . phpversion();
 
-	$x = mail($to, $subject, $message, $headers);
+	// $x = mail($to, $subject, $message, $headers);
 
 	echo $x;
 

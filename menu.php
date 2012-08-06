@@ -17,20 +17,26 @@
 	<script src="scripts/frontend.js"></script>
 	<script type="text/javascript">  
 		$(function() {
-			// var value = $(this).parents('div').children('.count').text(value); 
 
-			$('.minus').click(function() {
-				//var value = parseInt($(this).parents('div').children('.count').text(value));
-				var value = $(this).parents('div').children('.count').val();
+			// Need to use .live to make sure jqm loads script live for any content loaded via ajax
+			// necessary for inventory forms
+			
+			// $('.minus').click(function() {
+			$('.minus').live('click',function() {
+				// parse as float to avoid NaN errors and appending numbers as strings
+				var value = parseFloat($(this).parents('div').children('.count').val());
+				var increment = parseFloat($(this).parents('div').children('.increment').text());
 				if (value == 0) return;
-				value--;
+				value-=increment;
 				$(this).parents('div').children('.count').val(value);
 			});
 
-			$('.plus').click(function() {
-				//var value = parseInt($(this).parents('div').children('.count').val());
-				var value = $(this).parents('div').children('.count').val();
-				value++;
+			// $('.plus').click(function() {
+			$('.plus').live('click',function() {
+				// parse as float to avoid NaN errors and appending numbers as strings
+				var value = parseFloat($(this).parents('div').children('.count').val());
+				var increment = parseFloat($(this).parents('div').children('.increment').text());
+				value+=increment;
 				$(this).parents('div').children('.count').val(value);
 			});
 		});
@@ -82,18 +88,24 @@
 		<span class="plus" >+</span>
 	</div>
 	
-	<div data-role="content" data-theme="d">	
+	<div id="testing">
+	
+	</div>
+	
+	<div id="nightlyformcapsule" data-role="content" data-theme="d">	
 		<form action="nightly.php" method="post" data-ajax="false">
 			<h3>Front Fridge</h3>
 				<h4> How many cartons left? </h4>
 				
-				<div data-role="fieldcontain" class="ui-grid-a">
+				<div data-role="fieldcontain">
+					<span class="increment" style="display:none">2</span>
 					<label for="box1">box1</label>
 					<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>
 					<input class="count" name="box1" id="textinput1" placeholder="" value="2" type="tel">
 					<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>
 				</div>
 				<div data-role="fieldcontain">
+					<span class="increment" style="display:none">.25</span>
 					<label for="box1">box2</label>
 					<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>
 					<input class="count" name="box2" id="textinput2" placeholder="" value="2" type="tel">
@@ -135,7 +147,7 @@
 				<label for="nightinventcomment">Comments and name:</label><br>
 				<textarea cols="40" rows="8" name="nightinventcomment" id="nightinventcomment"></textarea>
 				
-				<a href="#" id="testingButton" data-theme="e" data-role="button" data-transition="fade">Test Submit</a>
+				<a href="#" id="nightlySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>
 				<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
 		</form>
 		

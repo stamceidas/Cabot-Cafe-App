@@ -1,13 +1,18 @@
 $(document).ready(function(){
 	
 	$("#pinSubmitButton").on("click",pinVerify);
-	$("#testingButton").on("click",getFormValues);
+	$("#nightlySubmitButton").live("click",getFormValues);
 	$("#nightlyInvButton").on("click",getNightlyForm);
+	
+	// $('#target').live('submit', params=$(this).parents('form').serializeArray(), function() {
+		// alert('Handler for .submit() called.');
+		// //return false;
+	// });
+	
 });
 
 
 function getNightlyForm(){
-	console.log("testing");
 	
 	var paramsArray = { 
 		"formtype" : "nightly"
@@ -21,7 +26,8 @@ function getNightlyForm(){
 		dataType: 'json',
 		success: function(data){
 			if(data.status == 'success'){
-				alert(data.msg);
+				//trigger allows html to be styled by jqm after ajax load
+				$('#nightlyformcapsule').html(data.msg).trigger('create');
 			}
 			if(data.status == 'error'){
 				alert(data.msg);
@@ -61,6 +67,30 @@ function pinVerify(){
 
 function getFormValues(){
 	console.log($(this).parents('form').serializeArray());
+	
+	var paramsArray = $(this).parents('form').serializeArray();
+
+	$.ajax({
+		type: "POST",
+		url: "admin/handlers.php",
+		data: "func=8&params="+JSON.stringify(paramsArray),
+		// url: "nightly.php",
+		// data: "params="+JSON.stringify(paramsArray),
+		dataType: 'json',
+		success: function(data){
+			if(data.status == 'success'){
+				alert(data.msg);
+				$(this).parent().hide("fast");
+			}
+			if(data.status == 'error'){
+				alert(data.msg);
+			}
+		},
+		error: function(data){
+			alert("Problem sending form!");
+		}
+	});	
+	
 	return false;
 
 }
