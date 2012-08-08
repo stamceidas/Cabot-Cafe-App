@@ -3,6 +3,11 @@
 	require_once("includes/common.php");
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 	
+	//if session not set, not logged in
+	if(empty($_SESSION['user'])){
+		header("Location:index.php");
+	}
+	
 ?>
 
 <html>
@@ -56,8 +61,8 @@
 
 	<div data-role="content" >	
 		<h3>Inventory Options</h3>
-		<p><a href="#nightly" data-role="button" id="nightlyInvButton">Nightly Inventory</a></p>
-		<p><a href="#weekly" data-role="button">Weekly Inventory</a></p>
+		<p><a href="#nightly" data-role="button" id="nightlyInvButton" name="nightly">Nightly Inventory</a></p>
+		<p><a href="#weekly" data-role="button" id="weeklyInvButton" name="weekly">Weekly Inventory</a></p>
 		<p><a href="#deliveries" data-role="button">Deliveries</a></p>
 		
 	</div><!-- /content -->
@@ -70,151 +75,44 @@
 
 <!-- Start of second page: #nightly -->
 <div data-role="page" id="nightly" data-theme="d">
-
+	
+	<!-- header -->
 	<div data-role="header">
 		<h1>Nightly Inventory</h1>
-	</div><!-- /header -->
-
-	<div data-role="content" data-theme="d">
-		<span class="minus">-</span>
-		<!--<span class="count">0</span>-->
-		<input class="count" name="" id="textinput1" placeholder="" value="2" type="">
-		<span class="plus" >+</span>
 	</div>
-	<div data-role="content" data-theme="d">
-		<span class="minus">-</span>
-		<!--<span class="count">0</span>-->
-		<input class="count" name="" id="textinput1" placeholder="" value="2" type="">
-		<span class="plus" >+</span>
-	</div>
+	<!-- /header -->
 	
-	<div id="testing">
-	
-	</div>
-	
+	<!-- content -->
 	<div id="nightlyformcapsule" data-role="content" data-theme="d">	
-		<form action="nightly.php" method="post" data-ajax="false">
-			<h3>Front Fridge</h3>
-				<h4> How many cartons left? </h4>
-				
-				<div data-role="fieldcontain">
-					<span class="increment" style="display:none">2</span>
-					<label for="box1">box1</label>
-					<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>
-					<input class="count" name="box1" id="textinput1" placeholder="" value="2" type="tel">
-					<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>
-				</div>
-				<div data-role="fieldcontain">
-					<span class="increment" style="display:none">.25</span>
-					<label for="box1">box2</label>
-					<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>
-					<input class="count" name="box2" id="textinput2" placeholder="" value="2" type="tel">
-					<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>
-				</div>
-				
-				<label for="whole-f">Whole Milk:</label>
-				<input type="range" name="whole-f" id="whole-f" value="10" min="0" max="20"  />
-			
-				<label for="skim-f">Skim Milk:</label>
-				<input type="range" name="skim-f" id="skim-f" value="10" min="0" max="20"  />
-			
-				<label for="soy-f">Soy Milk:</label>
-				<input type="range" name="soy-f" id="soy-f" value="10" min="0" max="20"  />
-				
-			<h3>Back Fridge</h3>
-				<h4> How many cartons left? </h4>
-				
-				<label for="whole-b">Whole Milk:</label>
-				<input type="range" name="whole-b" id="whole-b" value="10" min="0" max="20"  />
-			
-				<label for="skim-b">Skim Milk:</label>
-				<input type="range" name="skim-b" id="skim-b" value="10" min="0" max="20"  />
-			
-				<label for="soy-b">Soy Milk:</label>
-				<input type="range" name="soy-b" id="soy-b" value="10" min="0" max="20"  />
-				
-			<h3>Counter</h3>
-				<h4> How much of the bag is left?</h4>
-			
-				<label for="regbean">Regular Beans:</label>
-				<input type="range" name="regbean" id="regbean" value="0.5" min="0" max="1" step="0.1"  />
-
-				<label for="decafbean">Decaf Beans:</label>
-				<input type="range" name="decafbean" id="decafbean" value="0.5" min="0" max="1" step="0.1"  />
-			
-			<h3>Misc </h3>	
-			
-				<label for="nightinventcomment">Comments and name:</label><br>
-				<textarea cols="40" rows="8" name="nightinventcomment" id="nightinventcomment"></textarea>
-				
-				<a href="#" id="nightlySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>
-				<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
-		</form>
-		
-		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
-		
-	</div><!-- /content -->
+		<form action="nightly.php" method="post" data-ajax="false"></form>
+	</div>
+	<!-- /content -->
 	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+	<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>
+	
+	<? liveFooter(); ?>
+	
 </div><!-- /page two -->
 
 <!-- Start of third page: #weekly -->
 <div data-role="page" id="weekly" data-theme="d">
-
+	
+	<!-- header -->
 	<div data-role="header">
 		<h1>Weekly Inventory</h1>
-	</div><!-- /header -->
+	</div>
+	<!-- /header -->
 
-	<div data-role="content" data-theme="d">	
-		<form action="weekly.php" method="post" data-ajax="false">
-			<h3>Baked Goods</h3>
-
-				<label for="whole-f">Whole Milk:</label>
-				<input type="range" name="whole-f" id="whole-f" value="10" min="0" max="20"  />
-			
-				<label for="skim-f">Skim Milk:</label>
-				<input type="range" name="skim-f" id="skim-f" value="10" min="0" max="20"  />
-			
-				<label for="soy-f">Soy Milk:</label>
-				<input type="range" name="soy-f" id="soy-f" value="10" min="0" max="20"  />
-				
-			<h3>Back Fridge</h3>
-				
-				<label for="whole-b">Whole Milk:</label>
-				<input type="range" name="whole-b" id="whole-b" value="10" min="0" max="20"  />
-			
-				<label for="skim-b">Skim Milk:</label>
-				<input type="range" name="skim-b" id="skim-b" value="10" min="0" max="20"  />
-			
-				<label for="soy-b">Soy Milk:</label>
-				<input type="range" name="soy-b" id="soy-b" value="10" min="0" max="20"  />
-				
-			<h3>Counter</h3>
-			
-				<label for="regbean">Regular Beans:</label>
-				<input type="range" name="regbean" id="regbean" value="0.5" min="0" max="1" step="0.1"  />
-
-				<label for="decafbean">Decaf Beans:</label>
-				<input type="range" name="decafbean" id="decafbean" value="0.5" min="0" max="1" step="0.1"  />
-			
-			<h3>Misc </h3>	
-			
-				<label for="nightinventcomment">Comments and name:</label><br>
-				<textarea cols="40" rows="8" name="nightinventcomment" id="nightinventcomment"></textarea>
-				
-				
-				<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
-		</form>
-		
-		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
-		
-	</div><!-- /content -->
+	<!-- content -->
+	<div id="weeklyformcapsule" data-role="content" data-theme="d">	
+		<form action="weekly.php" method="post" data-ajax="false"></form>
+	</div>
+	<!-- /content -->
 	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+	<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>
+	
+	<? liveFooter(); ?>
+
 </div><!-- /page three -->
 
 <!-- Start of fourth page: #deliveries -->

@@ -59,7 +59,7 @@
 		$time = date("Gi");
 		
 		$newline = "\n";
-		$break = "=================================";
+		$linebreak = "=================================";
 		$sep = ",";
 		
 		$datecreated = "Date Created: " . $date . $newline;
@@ -70,7 +70,10 @@
 		else if($type == 'weekly')
 			$filelog = "Weekly Inventory Log" . $newline . $newline;
 		
-		$filelog = $filelog . $datecreated . $timecreated . $break . $newline . $newline;
+		$userinfo = "Submitted by: " . $_SESSION['firstname'] . " " . $_SESSION['lastname'] . $newline;
+		$userinfo = $userinfo . "Username: " . $_SESSION['user'] . $sep . "ID: " . $_SESSION['id'] . $newline;
+		
+		$filelog = $filelog . $datecreated . $timecreated . $userinfo . $linebreak . $newline . $newline;
 		
 		fwrite($filehandle,$filelog);
 		
@@ -359,8 +362,6 @@
 				else
 					echoexit('error', "Update failed!");
 			}
-			
-			
 		}
 	}
 	
@@ -416,19 +417,11 @@
 		global $params;
 		$params = json_decode($params, true);
 		
-		// $test["a"] = "item a";
-		// $test["b"] = "item b";
-		
-		// $testjson = json_encode($test);
-
-		// echoexit('error', $testjson);
-		
 		if($params['formtype'] == "nightly"){
-			// $sql="SELECT location FROM nightlyinventory order by location asc";
-			// $result = mysql_query($sql);
 			
 			$location = '';
-			$itemform = '<form id="target" action="nightly.php" method="post" data-ajax="false">';
+			$itemform = '<form id="target" method="post" data-ajax="false">';
+			$itemform = $itemform . '<input class="nightly" name="nightly" id="nightly" value="1" type="text" style="display:none">';
 			
 			$sql="SELECT * FROM nightlyinventory order by location asc";
 			$result=mysql_query($sql);
@@ -452,41 +445,49 @@
 			
 			}
 			$itemform = $itemform . '<a href="#" id="nightlySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
-			//$itemform = $itemform . '<button type="submit" data-theme="e" name="submit" value="submit-value" >Submit PHP</button>';
 			$itemform = $itemform . '</form>';
+			$itemform = $itemform . '<div class="response"></div>';
 			
 			$formjson = json_encode($itemform);
 			echoexit('success',$itemform);
 			
 		}
 		else if($params['formtype'] == "weekly"){
-		
+			$location = '';
+			$itemform = '<form id="target" method="post" data-ajax="false">';
+			$itemform = $itemform . '<input class="weekly" name="weekly" id="weekly" value="1" type="text" style="display:none">';
+			
+			$sql="SELECT * FROM weeklyinventory order by location asc";
+			$result=mysql_query($sql);
+			
+			while($row = mysql_fetch_array($result)){
+				
+				if(strcmp($location,$row['location']) != 0){
+					$location = $row['location'];
+					$itemform = $itemform . '<h3>'.$row['location'].'</h3>';
+				}
+				
+				$itemform = $itemform . '<div data-role="fieldcontain">';
+				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
+				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
+				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
+				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['min_amt'].'" type="tel">';
+				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
+				$itemform = $itemform . '</div>';
+				
+			
+			}
+			$itemform = $itemform . '<a href="#" id="weeklySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
+			$itemform = $itemform . '</form>';
+			$itemform = $itemform . '<div class="response"></div>';
+			
+			$formjson = json_encode($itemform);
+			echoexit('success',$itemform);
 		}
 		else if($params['formtype'] == "deliveries"){
-		
+
 		}
 		
-		$sql="SELECT * FROM admin WHERE pin='".$params['pin']."'";
-		$result=mysql_query($sql);
-		$row = mysql_fetch_array($result);
-		
-		if(mysql_num_rows($result)==1){
-			//now set the session from here if needed
-			$_SESSION['user']=$row['username'];
-			$_SESSION['firstname']=$row['firstname'];
-			$_SESSION['lastname']=$row['lastname'];
-			$_SESSION['id'] = $row['id'];
-			$_SESSION['pin'] = $row['PIN'];
-			echoexit('success', "Authentication successful!");
-		
-		}
-		else if (mysql_num_rows($result)>1){
-			echoexit('error','There are multiple employees with that ID! Please contact cafe managers!');
-		}
-		else{
-			echoexit('error','Invalid PIN. Please try again.');
-		}
-	
 	}
 	
 	function submit_inv_form(){
@@ -498,17 +499,33 @@
 		$date = date("Ymd");
 		$time = date("Gi");
 		
-		//generate log
-		$filename = "../nightly_logs/nightly_log_".$date."_".$time.".csv";
+		//email success flag
+		$x = 0;
 		
-		create_log_file($filename, $params, 'nightly');
-		
-		$x = generate_mail('nightly');
-		
+		// after array_shift, $logtype will contain the first array item, $params will contain the rest
+		// $logtype will contain the logtype indicator
+		$logtype = array_shift($params);
+
+		if($logtype['name'] == 'nightly'){
+			//generate nightly log and send email
+			$filename = "../nightly_logs/nightly_log_".$date."_".$time.".csv";
+			create_log_file($filename, $params, 'nightly');
+			$x = generate_mail('nightly');
+		}
+		else if ($logtype['name'] == 'weekly'){
+			//generate weekly log and send email
+			$filename = "../weekly_logs/weekly_log_".$date."_".$time.".csv";
+			create_log_file($filename, $params, 'weekly');
+			$x = generate_mail('weekly');
+		}
+
 		if ($x == 1)
 			echoexit("success", "Email submission successful!");
 		else
 			echoexit("error", "Email submission failed!");
+
+		
+		
 	}
 	
 	//clean the strings out
@@ -545,7 +562,7 @@
 			break;
 		default:
 			echoexit("error", "Error! Unspecified action!");
-			
+			break;
 	}
 
 	

@@ -54,6 +54,14 @@
 		
 	}
 
+	function liveFooter(){
+		echo '<!-- /footer -->';
+		echo '<div data-role="footer">';
+		echo '<h4>Created by Saagar Deshpande for Cabot Cafe</h4>';
+		echo '</div>';
+	
+	}
+	
 	function genSalt($lenth = 22) {
 		// makes a random alpha numeric string of a given lenth
 		$aZ09 = array_merge(range('A', 'Z'), range('a', 'z'),range(0, 9));

@@ -2,20 +2,20 @@ $(document).ready(function(){
 	
 	$("#pinSubmitButton").on("click",pinVerify);
 	$("#nightlySubmitButton").live("click",getFormValues);
-	$("#nightlyInvButton").on("click",getNightlyForm);
-	
-	// $('#target').live('submit', params=$(this).parents('form').serializeArray(), function() {
-		// alert('Handler for .submit() called.');
-		// //return false;
-	// });
-	
+	$("#nightlyInvButton").live("click",getInvForm);
+	$("#weeklySubmitButton").live("click",getFormValues);
+	$("#weeklyInvButton").on("click",getInvForm);
+
 });
 
 
-function getNightlyForm(){
+function getInvForm(){
+	
+	// get the type of form to load
+	var formtype = $(this).attr("name");
 	
 	var paramsArray = { 
-		"formtype" : "nightly"
+		"formtype" : formtype
 	};
 	
 	
@@ -27,7 +27,10 @@ function getNightlyForm(){
 		success: function(data){
 			if(data.status == 'success'){
 				//trigger allows html to be styled by jqm after ajax load
-				$('#nightlyformcapsule').html(data.msg).trigger('create');
+				if(formtype == 'nightly')
+					$('#nightlyformcapsule').html(data.msg).trigger('create');
+				else if(formtype == 'weekly')
+					$('#weeklyformcapsule').html(data.msg).trigger('create');
 			}
 			if(data.status == 'error'){
 				alert(data.msg);
@@ -67,7 +70,9 @@ function pinVerify(){
 
 function getFormValues(){
 	console.log($(this).parents('form').serializeArray());
+	var formElt = $(this).parent();
 	
+	//$(this).parent().hide();
 	var paramsArray = $(this).parents('form').serializeArray();
 
 	$.ajax({
@@ -80,7 +85,8 @@ function getFormValues(){
 		success: function(data){
 			if(data.status == 'success'){
 				alert(data.msg);
-				$(this).parent().hide("fast");
+				formElt.hide();
+				formElt.parent().find('.response').html(data.msg).trigger('create');
 			}
 			if(data.status == 'error'){
 				alert(data.msg);
