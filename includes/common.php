@@ -62,6 +62,11 @@
 	
 	}
 	
+	function invMenuUsage(){
+		$str = 'Use the +/- buttons to change the value of the item. <br> The number in () is the increment value. <br> You can also click on the text bar and fill in a custom value.<br>';
+		echo $str;
+	}
+	
 	function genSalt($lenth = 22) {
 		// makes a random alpha numeric string of a given lenth
 		$aZ09 = array_merge(range('A', 'Z'), range('a', 'z'),range(0, 9));

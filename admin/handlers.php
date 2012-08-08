@@ -35,7 +35,6 @@
 		for($i = 0; $i < $j; $i++){
 			$params[$i] = mysql_real_escape_string($params[$i]);
 		}
-	
 	}
 	
 	function isValid($x, $size){
@@ -81,9 +80,18 @@
 		$valuesStr = '';
 		
 		// parse through item array and store names and values
+		// also update the values in the database...
 		foreach($items_array as $item){
 			$namesStr = $namesStr . $item['name'] . $sep;
 			$valuesStr = $valuesStr . $item['value'] . $sep;
+		
+			if($type == 'nightly')
+				$sql = "UPDATE nightlyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
+			if($type == 'weekly')
+				$sql = "UPDATE weeklyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
+			if(!mysql_query($sql))
+				echoexit('error', "Failed to update item amounts correctly!");
+				// echoexit('error',$sql);
 		}
 		
 		fwrite($filehandle, $namesStr.$newline);
@@ -92,21 +100,32 @@
 		fclose($filehandle);
 		
 		return true;
-		
 	}
 	
 	
-	function generate_mail($type){
+	function generate_mail($type,$filename){
 		
 		$date = date("Ymd");
 		$time = date("Gi");
 		
-		$receiver_email = 'saagar.deshpande.nj@gmail.com';
-		$sender_email = 'saagar.deshpande.nj@gmail.com';
-		$sender_name = 'Saagar';
+		$receiver_email = '';
 		
-		$msg = "File was submitted by user: <>. Download it here!";
+		$sql = "SELECT * FROM admin WHERE sendto = 1";
+		$result = mysql_query($sql);
+		while($row = mysql_fetch_array($result)){
+			$receiver_email = $receiver_email . $row['email'] . ", ";
+		}
+
+		$sender_email = 'cabotcafe@hcs.harvard.edu';
+		$sender_name = 'Cabot Cafe Daemon via HCS';
 		
+		//get account name from url
+		preg_match_all('/^(\/[^\/]*){1}/',$_SERVER['REQUEST_URI'],$matches);	
+		
+		$url="http://".$_SERVER['HTTP_HOST'].$matches[0][0].substr($filename,2);
+		
+		$msg = "Inventory log was submitted by user:". $_SESSION['firstname'] .' '. $_SESSION['lastname'] ."<".$_SESSION['user'].">. Download it here: " . $url;
+		echoexit('error',$msg);
 		
 		$to      = $receiver_email;
 		if($type == 'nightly')
@@ -510,13 +529,13 @@
 			//generate nightly log and send email
 			$filename = "../nightly_logs/nightly_log_".$date."_".$time.".csv";
 			create_log_file($filename, $params, 'nightly');
-			$x = generate_mail('nightly');
+			$x = generate_mail('nightly',$filename);
 		}
 		else if ($logtype['name'] == 'weekly'){
 			//generate weekly log and send email
 			$filename = "../weekly_logs/weekly_log_".$date."_".$time.".csv";
 			create_log_file($filename, $params, 'weekly');
-			$x = generate_mail('weekly');
+			$x = generate_mail('weekly',$filename);
 		}
 
 		if ($x == 1)

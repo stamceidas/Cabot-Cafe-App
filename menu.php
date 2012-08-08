@@ -82,6 +82,8 @@
 	</div>
 	<!-- /header -->
 	
+	<? invMenuUsage(); ?>
+	
 	<!-- content -->
 	<div id="nightlyformcapsule" data-role="content" data-theme="d">	
 		<form action="nightly.php" method="post" data-ajax="false"></form>
@@ -103,6 +105,8 @@
 	</div>
 	<!-- /header -->
 
+	<? invMenuUsage(); ?>
+	
 	<!-- content -->
 	<div id="weeklyformcapsule" data-role="content" data-theme="d">	
 		<form action="weekly.php" method="post" data-ajax="false"></form>
@@ -146,9 +150,7 @@
 	
 	</div><!-- /content -->
 	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+	<? liveFooter(); ?>
 </div><!-- /page four -->
 
 
