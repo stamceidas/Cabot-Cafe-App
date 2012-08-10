@@ -64,6 +64,7 @@
 		<p><a href="#nightly" data-role="button" id="nightlyInvButton" name="nightly">Nightly Inventory</a></p>
 		<p><a href="#weekly" data-role="button" id="weeklyInvButton" name="weekly">Weekly Inventory</a></p>
 		<p><a href="#deliveries" data-role="button">Deliveries</a></p>
+		<p><a href="#emergency"data-role="button" data-rel="dialog" data-transition="pop">Emergency!</a></p>
 		
 	</div><!-- /content -->
 	
@@ -153,6 +154,25 @@
 	<? liveFooter(); ?>
 </div><!-- /page four -->
 
+<!-- Start of pop-up page: #emergency -->
+<div data-role="page" id="emergency">
+
+	<div data-role="header" data-theme="e">
+		<h1>Emergency!</h1>
+	</div><!-- /header -->
+
+	
+	
+	<div data-role="content" data-theme="d">
+		<h2>Contact Numbers</h2>
+		<? liveEmergency(); ?>
+		<p><a href="#home" data-rel="back" data-role="button" data-inline="true" data-icon="back">Home</a></p>	
+	</div><!-- /content -->
+	
+	
+	
+	<? liveFooter(); ?>
+</div><!-- /page popup -->
 
 </body>
 </html>

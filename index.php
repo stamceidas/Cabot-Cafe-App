@@ -40,28 +40,27 @@
 		<p><a href="#emergency"data-role="button" data-rel="dialog" data-transition="pop">Emergency!</a></p>
 	</div><!-- /content -->
 	
-	<div data-role="footer" data-theme="d">
-		<h4>Created by Saagar Deshpande for Cabot Cafe</h4>
-	</div><!-- /footer -->
+	<? liveFooter(); ?>
 </div><!-- /page one -->
 
 <!-- Start of pop-up page: #emergency -->
 <div data-role="page" id="emergency">
 
 	<div data-role="header" data-theme="e">
-		<h1>Emergency??</h1>
+		<h1>Emergency!</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="d">	
+	
+	
+	<div data-role="content" data-theme="d">
 		<h2>Contact Numbers</h2>
-		<p> Jesse Kaplan: tel: 5555555 </p>
-		<p> (note: need to admin panel this) </p>
+		<? liveEmergency(); ?>
 		<p><a href="#home" data-rel="back" data-role="button" data-inline="true" data-icon="back">Home</a></p>	
 	</div><!-- /content -->
 	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
+	
+	
+	<? liveFooter(); ?>
 </div><!-- /page popup -->
 
 

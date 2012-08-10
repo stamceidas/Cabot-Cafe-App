@@ -68,7 +68,7 @@
 			<div id = "users">
 				<table>
 					<tr>
-						<th colspan="7"> Cabot Cafe Admin List </th>
+						<th colspan="10"> Cabot Cafe Admin List </th>
 					</tr>
 					<tr>
 						<th> First Name </th>
@@ -76,6 +76,9 @@
 						<th> Username </th>
 						<th> Email </th>
 						<th> Year </th>
+						<th> Phone # </th>
+						<th> Receive Log? </th>
+						<th> Emergency Contact? </th>
 						<th> Sudo </th>
 						<th> Action </th>
 					</tr>
@@ -87,6 +90,9 @@
 						echo '<td>'.$row['username'].'</td>';
 						echo '<td>'.$row['email'].'</td>';
 						echo '<td>'.$row['year'].'</td>';
+						echo '<td>'.$row['tel'].'</td>';
+						echo '<td>'.($row['sendto'] == 1 ? 'True':'False').'</td>';
+						echo '<td>'.($row['emergency'] == 1 ? 'True':'False').'</td>';
 						echo '<td>'.($row['sudo'] == 1 ? 'True':'False').'</td>';
 						echo '<td>';
 						if ($_SESSION['sudo']){
@@ -114,26 +120,25 @@
 				
 				</table>
 			</div>
-			<div id="userDiag" style="display:none"><span>stuff</span></div>
-		<?
-			if ($_SESSION['sudo'])
-		{
-		?>
-
-
+			<!--<div id="userDiag" style="display:none"><span>stuff</span></div>-->
 			<div>
+			<?
+				if ($_SESSION['sudo'])
+			{
+			?>
 				<p> As admin, you can create new accounts, edit existing accounts, and delete all but your own account. </p>
+			<?
+			}
+			else
+			{
+			?>
+				<p> As a user, you can only update your own information. </p>
+			<?
+			}
+			?>
+				<b> You can always edit your PIN (not visible in table!). </b>
+			
 			</div>
-		<?
-		}
-		else
-		{
-		?>
-			<p> As a user, you can only update your own information. </p>
-		<?
-		}
-		?>
-		
 		
 		
 		

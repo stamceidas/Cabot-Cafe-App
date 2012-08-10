@@ -13,9 +13,12 @@ $(document).ready(function(){
 											 "firstname" : $('#firstname').val(),
 											 "lastname" : $('#lastname').val(), 
 											 "email" : $('#email').val(),
+											 "phone" : $('#phone').val(),
 											 "year" : $('#year').val(),
 											 "pin" : $('#pin').val(),
-											 "sudo" : $('#sudo').is(':checked') ? $('#sudo').val() : ''
+											 "sudo" : $('#sudo').is(':checked') ? $('#sudo').val() : '',
+											 "emergency" : $('#emergency').is(':checked') ? $('#emergency').val() : '',
+											 "sendto" : $('#sendto').is(':checked') ? $('#sendto').val() : '',
 										};
 										
 										$.ajax({

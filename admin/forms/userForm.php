@@ -17,8 +17,16 @@
 		$row = mysql_fetch_array($result);
 		// create form with user's information
 		$isSudo = '';
+		$isSendto = '';
+		$isEmergency = '';
 		if($row['sudo'] == 1){
 			$isSudo = 'checked';
+		}
+		if($row['sendto'] == 1){
+			$isSendto = 'checked';
+		}
+		if($row['emergency'] == 1){
+			$isEmergency = 'checked';
 		}
 		if (!$_SESSION['sudo']){
 			$isSudo = $isSudo . 'style="display:none"';
@@ -31,9 +39,12 @@
 					.'<tr><td id="label">First Name: </td><td id="field"><input type="text" id="firstname" value="'.$row['firstname'].'"/></td></tr>'
 					.'<tr><td id="label">Last Name: </td><td id="field"><input type="text" id="lastname" value="'.$row['lastname'].'"/></td></tr>'
 					.'<tr><td id="label">Email: </td><td id="field"><input type="text" id="email" value="'.$row['email'].'"/></td></tr>'
+					.'<tr><td id="label">Phone #: </td><td id="field"><input type="text" id="phone" value="'.$row['tel'].'"/></td></tr>'
 					.'<tr><td id="label">Year: </td><td id="field"><input type="text" id="year" value="'.$row['year'].'"/></td></tr>'
 					.'<tr><td id="label">PIN: </td><td id="field"><input type="text" id="pin" value="'.$row['PIN'].'"/></td></tr>'
-					.'<tr><td><input type="checkbox" id="sudo" value="true" '.$isSudo.'/> Super Admin</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="sudo" value="true" '.$isSudo.'/> Super Admin</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="emergency" value="true" '.$isEmergency.'/> Emergency Contact?</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="sendto" value="true" '.$isSendto.'/> Receive Logs?</td></tr>'
 					.'</table>'
 					.'* Super Admins can manage Cafe Dashboard users.'
 					.'<input type="submit" value="Submit" style="display:none"/>'
@@ -50,9 +61,12 @@
 					.'<tr><td id="label">First Name: </td><td id="field"><input type="text" id="firstname"/></td></tr>'
 					.'<tr><td id="label">Last Name: </td><td id="field"><input type="text" id="lastname" /></td></tr>'
 					.'<tr><td id="label">Email: </td><td id="field"><input type="text" id="email"/></td></tr>'
+					.'<tr><td id="label">Phone #: </td><td id="field"><input type="text" id="phone"/></td></tr>'
 					.'<tr><td id="label">Year: </td><td id="field"><input type="text" id="year"/></td></tr>'
 					.'<tr><td id="label">PIN: </td><td id="field"><input type="text" id="pin"/></td></tr>'
-					.'<tr><td><input type="checkbox" id="sudo" value="true" /> Super Admin</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="sudo" value="true" /> Super Admin?</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="emergency" value="true" /> Emergency Contact?</td></tr>'
+					.'<tr><td colspan="2"><input type="checkbox" id="sendto" value="true" /> Receive Logs?</td></tr>'
 					.'</table>'
 					.'* Super Admins can manage Cafe Dashboard users.'
 					.'<input type="submit" value="Submit" style="display:none"/>'

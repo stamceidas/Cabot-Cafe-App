@@ -184,11 +184,23 @@
 		else{
 			$params['sudo'] = 0;
 		}
+		if($params['emergency'] == 'true'){
+			$params['emergency'] = 1;
+		}
+		else{
+			$params['emergency'] = 0;
+		}
+		if($params['sendto'] == 'true'){
+			$params['sendto'] = 1;
+		}
+		else{
+			$params['sendto'] = 0;
+		}
 		
 		// creating a new user
 		if(empty($params['id'])){
 			if(!isValid($params['password'],8) ){
-			echoexit('error', 'Invalid password.');
+				echoexit('error', 'Invalid password.');
 			}
 			if($params['password'] != $params['password2']){
 				echoexit('error',"Passwords don't match!");
@@ -202,6 +214,7 @@
 			$userSalt = strval(genSalt());
 			$encryptedPassword = passGen($params['password'],$userSalt);
 			
+			// put together all the values
 			$values = "'" . strval($params['username']) . "','" 
 							. strval($params['firstname']) . "','"
 							. strval($params['lastname']) . "','"
@@ -209,10 +222,13 @@
 							. strval($params['email']) . "','"
 							. strval($params['sudo']) . "','"
 							. strval($params['year']) . "','"
+							. strval($params['phone']) . "','"
+							. strval($params['emergency']) . "','"
+							. strval($params['sendto']) . "','"
 							. $userSalt . "','"							
 							. strval($params['pin']) . "'";
 		
-			if(mysql_query("INSERT INTO admin(username,firstname,lastname, password,email,sudo, year, salt,PIN) VALUES ($values)"))
+			if(mysql_query("INSERT INTO admin(username,firstname,lastname, password,email,sudo, year, tel,emergency,sendto,salt,PIN) VALUES ($values)"))
 				echoexit('success', "User created!");
 			else
 				echoexit('error', "Failed to create user!");
@@ -229,7 +245,7 @@
 					else{
 						$userSalt = strval(genSalt());
 						$encryptedPassword = passGen($params['password'],$userSalt);
-						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', tel = '{$params["phone"]}', sendto = '{$params["sendto"]}', emergency = '{$params["emergency"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information and Password changed!");
 						else
 							echoexit('error', "Update failed!");
@@ -237,7 +253,7 @@
 				}
 				else{
 					//just update all other information
-					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', year = '{$params["year"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', sudo = '{$params["sudo"]}', year = '{$params["year"]}', tel = '{$params["phone"]}', sendto = '{$params["sendto"]}', emergency = '{$params["emergency"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information changed!");
 						else
 							echoexit('error', "Update failed!");
@@ -253,7 +269,7 @@
 					else{
 						$userSalt = strval(genSalt());
 						$encryptedPassword = passGen($params['password'],$userSalt);
-						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+						if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', password = '{$encryptedPassword}', year = '{$params["year"]}', tel = '{$params["phone"]}', sendto = '{$params["sendto"]}', emergency = '{$params["emergency"]}', salt = '{$userSalt}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information and Password changed!");
 						else
 							echoexit('error', "Update failed!");
@@ -261,7 +277,7 @@
 				}
 				else{
 					//just update all other information
-					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', year = '{$params["year"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
+					if(mysql_query("UPDATE admin SET firstname = '{$params["firstname"]}', lastname = '{$params["lastname"]}', email = '{$params["email"]}', year = '{$params["year"]}', tel = '{$params["phone"]}', sendto = '{$params["sendto"]}', emergency = '{$params["emergency"]}', PIN = '{$params["pin"]}' WHERE id = {$params["id"]}"))
 							echoexit('update_success', "Update successful! Information changed!");
 						else
 							echoexit('error', "Update failed!");
