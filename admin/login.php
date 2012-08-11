@@ -4,12 +4,8 @@
 
 	//get the posted values
 	$user=mysql_real_escape_string($_POST["user"]);
-	// $user = 'ichen';
-	//uncomment this to add password hashing
-	//$pass= passGen(mysql_real_escape_string($_POST["pass"]));
 	$pass= mysql_real_escape_string($_POST["pass"]);
-	// $pass = 'test';
-
+	
 	//now validating the username and password
 	$sql="SELECT * FROM admin WHERE username='".$user."'";
 	$result=mysql_query($sql);
@@ -31,7 +27,7 @@
 				$_SESSION['firstname']=$row['firstname'];
 				$_SESSION['id'] = $row['id'];
 				$_SESSION['sudo'] = $row['sudo'];
-				
+				$_SESSION['admin'] = true;
 				//echo $_SESSION['user'];
 			}
 			else

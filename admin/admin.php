@@ -3,7 +3,7 @@
 	require_once("../includes/common.php");
 
 	
-	if(!empty($_SESSION['user'])){
+	if(!empty($_SESSION['admin'])){
 		header("Location:dashboard.php");
 	}
 		

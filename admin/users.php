@@ -3,7 +3,7 @@
 	require_once("../includes/common.php");
 	
 	//if session not set, not logged in
-	if(empty($_SESSION['user'])){
+	if(empty($_SESSION['admin'])){
 		header("Location:admin.php");
 	}
 	
