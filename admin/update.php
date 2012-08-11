@@ -49,11 +49,5 @@
 			<div id="formmsg"></div>
 			<br>
 		</form>
-		
-		
-		
-	
 	</body>
-
-
 </html>

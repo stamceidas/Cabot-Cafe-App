@@ -1,5 +1,5 @@
 <?
-
+	ob_start();
 	require_once("../includes/common.php");
 
 	$sql="SELECT * FROM nightlyinventory ORDER BY location";
@@ -109,3 +109,4 @@
 
 
 </html>
+<? ob_flush(); ?>

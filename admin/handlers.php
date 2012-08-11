@@ -89,7 +89,7 @@
 				$sql = "UPDATE nightlyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
 			if($type == 'weekly')
 				$sql = "UPDATE weeklyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
-			if(!mysql_query($sql))
+			if(($type != 'deliveries') && !mysql_query($sql))
 				echoexit('error', "Failed to update item amounts correctly!");
 				// echoexit('error',$sql);
 		}
@@ -124,7 +124,7 @@
 		
 		$url="http://".$_SERVER['HTTP_HOST'].$matches[0][0].substr($filename,2);
 		
-		$msg = "Inventory log was submitted by user:". $_SESSION['firstname'] .' '. $_SESSION['lastname'] ."<".$_SESSION['user'].">. Download it here: " . $url;
+		$msg = "Cafe Log was submitted by user:". $_SESSION['firstname'] .' '. $_SESSION['lastname'] ."<".$_SESSION['user'].">. Download it here: " . $url;
 		echoexit('error',$msg);
 		
 		$to      = $receiver_email;
@@ -132,13 +132,15 @@
 			$subject = "[Cabot Cafe App] Nightly Inventory Log (".$date.")";
 		else if($type == 'weekly')
 			$subject = "[Cabot Cafe App] Weekly Inventory Log (".$date.")";
+		else if($type == 'deliveries')
+			$subject = "[Cabot Cafe App] Delivery Log (".$date.")";
 		$message = $msg;
 		$headers = 	'From:'. $sender_name. '<'.$sender_email.'>' . "\r\n" .
 					'Reply-To: '.$sender_email . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 
-		//$x = mail($to, $subject, $message, $headers);
-		$x = 1;
+		$x = mail($to, $subject, $message, $headers);
+		//$x = 1;
 		return $x;
 	}
 	
@@ -152,6 +154,7 @@
 	 * 5 - delete_item()
 	 * 6 - pin_verify()
 	 * 7 - get_inv_form()
+	 * 8 - submit_inv_form();
 	 *******************************/
 	
 	// this function should be replaced with users form mvc
@@ -489,7 +492,7 @@
 		}
 		else if($params['formtype'] == "weekly"){
 			$location = '';
-			$itemform = '<form id="target" method="post" data-ajax="false">';
+			$itemform = '<form method="post" data-ajax="false">';
 			$itemform = $itemform . '<input class="weekly" name="weekly" id="weekly" value="1" type="text" style="display:none">';
 			
 			$sql="SELECT * FROM weeklyinventory order by location asc";
@@ -520,11 +523,35 @@
 			echoexit('success',$itemform);
 		}
 		else if($params['formtype'] == "deliveries"){
+			$location = '';
+			$itemform = '<form method="post" data-ajax="false">';
+			$itemform = $itemform . '<input class="deliveries" name="deliveries" id="deliveries" value="1" type="text" style="display:none">';
 
+			$itemform = $itemform . '<div data-role="fieldcontain">';
+			$itemform = $itemform . '<label for="arrivals_text">What arrived and how many?</label>';
+			$itemform = $itemform . '<textarea cols="40" rows="8" name="arrivals_text" id="arrivals_text" placeholder="Type response here"></textarea>';
+			$itemform = $itemform . '</div>';
+			
+			$itemform = $itemform . '<div data-role="fieldcontain">';
+			$itemform = $itemform . '<label for="happens_text">What did you do with it?</label>';
+			$itemform = $itemform . '<textarea cols="40" rows="8" name="happens_text" id="happens_text" placeholder="Type response here"></textarea>';
+			$itemform = $itemform . '</div>';
+			
+			$itemform = $itemform . '<div data-role="fieldcontain">';
+			$itemform = $itemform . '<label for="comments_text">Comments</label>';
+			$itemform = $itemform . '<textarea cols="40" rows="8" name="comments_text" id="comments_text" placeholder="Type response here"></textarea>';
+			$itemform = $itemform . '</div>';
+				
+			$itemform = $itemform . '<a href="#" id="deliveriesSubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
+			$itemform = $itemform . '</form>';
+			$itemform = $itemform . '<div class="response"></div>';
+			
+			$formjson = json_encode($itemform);
+			echoexit('success',$itemform);
 		}
 		
 	}
-	
+
 	function submit_inv_form(){
 		global $params;
 		$params = json_decode($params, true);
@@ -553,14 +580,22 @@
 			create_log_file($filename, $params, 'weekly');
 			$x = generate_mail('weekly',$filename);
 		}
+		else if ($logtype['name'] == 'deliveries'){
+			//generate weekly log and send email
+			$filename = "../delivery_logs/delivery_log_".$date."_".$time.".csv";
+			// use comprehensible names instead of label ids
+			$params[0]['name'] = "What arrived and how many?";
+			$params[1]['name'] = "What did you do with it?";
+			$params[2]['name'] = "Comments";
+			create_log_file($filename, $params, 'weekly');
+			$x = generate_mail('deliveries',$filename);
+		}
 
 		if ($x == 1)
 			echoexit("success", "Email submission successful!");
 		else
 			echoexit("error", "Email submission failed!");
 
-		
-		
 	}
 	
 	//clean the strings out

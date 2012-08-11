@@ -1,10 +1,10 @@
-<!DOCTYPE html> 
 <?
+	ob_start();
 	require_once("includes/common.php");
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 	
 ?>
-
+<!DOCTYPE html> 
 <html>
 
 <head>
@@ -66,3 +66,4 @@
 
 </body>
 </html>
+<? ob_flush(); ?>

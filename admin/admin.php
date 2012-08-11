@@ -1,4 +1,5 @@
 <?
+	ob_start();
 	require_once("../includes/common.php");
 
 	
@@ -34,3 +35,4 @@
 	</body>
 
 </html>
+<? ob_flush(); ?>

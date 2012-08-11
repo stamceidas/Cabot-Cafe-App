@@ -5,7 +5,8 @@ $(document).ready(function(){
 	$("#nightlyInvButton").live("click",getInvForm);
 	$("#weeklySubmitButton").live("click",getFormValues);
 	$("#weeklyInvButton").on("click",getInvForm);
-
+	$("#deliveriesSubmitButton").live("click",getFormValues);
+	$("#deliveriesButton").on("click",getInvForm);
 });
 
 
@@ -31,6 +32,8 @@ function getInvForm(){
 					$('#nightlyformcapsule').html(data.msg).trigger('create');
 				else if(formtype == 'weekly')
 					$('#weeklyformcapsule').html(data.msg).trigger('create');
+				else if(formtype == 'deliveries')
+					$('#deliveriesformcapsule').html(data.msg).trigger('create');
 			}
 			if(data.status == 'error'){
 				alert(data.msg);

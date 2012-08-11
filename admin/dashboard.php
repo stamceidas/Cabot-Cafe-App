@@ -1,4 +1,5 @@
 <?
+	ob_start();
 	require_once("../includes/common.php");
 	
 	//if session not set, not logged in
@@ -11,8 +12,6 @@
 	  session_destroy();
 	  header("Location:admin.php");
 	}
-	
-	
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +30,6 @@
 			Welcome to the Cabot Cafe Admin Dashboard!
 		</div>
 		<? navBar("dashboard");	?>
-		
-		
-		
-	
 	</body>
-
-
 </html>
+<? ob_flush(); ?>

@@ -1,15 +1,15 @@
-<!DOCTYPE html> 
 <?
+	ob_start();
 	require_once("includes/common.php");
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-	
+
 	//if session not set, not logged in
 	if(empty($_SESSION['user'])){
-		header("Location:index.php");
+			header("Location:index.php");
 	}
-	
-?>
 
+?>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -63,7 +63,7 @@
 		<h3>Inventory Options</h3>
 		<p><a href="#nightly" data-role="button" id="nightlyInvButton" name="nightly">Nightly Inventory</a></p>
 		<p><a href="#weekly" data-role="button" id="weeklyInvButton" name="weekly">Weekly Inventory</a></p>
-		<p><a href="#deliveries" data-role="button">Deliveries</a></p>
+		<p><a href="#deliveries" data-role="button" id="deliveriesButton" name="deliveries">Deliveries</a></p>
 		<p><a href="#emergency"data-role="button" data-rel="dialog" data-transition="pop">Emergency!</a></p>
 		
 	</div><!-- /content -->
@@ -126,11 +126,15 @@
 	<div data-role="header">
 		<h1>Deliveries</h1>
 	</div><!-- /header -->
+	<!-- deliveries form -->
+	<div id="deliveriesformcapsule" data-role="content" data-theme="d">	
+		<form action="deliveries.php" method="post" data-ajax="false"></form>
+	</div>
+	<!-- /content -->
 	
-
-	<div data-role="content" data-theme="d">	
+	<!--<div data-role="content" data-theme="d">	
 		<h2>Please fill the following form:</h2>
-		<!-- deliveries form -->
+		
 		<form action="deliveries.php" method="post" data-ajax="false">
 			<div data-role="fieldcontain">
 				<label for="arrivals_text">What arrived and how many?:</label><br>
@@ -146,12 +150,12 @@
 			</div>
 			<button type="submit" data-theme="e" name="submit" value="submit-value">Submit</button>
 		</form>
+	</div>-->
 	
-		<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
-	
-	</div><!-- /content -->
+	<p><a href="#home" data-direction="reverse" data-role="button" data-theme="d">Home</a></p>	
 	
 	<? liveFooter(); ?>
+	
 </div><!-- /page four -->
 
 <!-- Start of pop-up page: #emergency -->
@@ -176,3 +180,4 @@
 
 </body>
 </html>
+<? ob_flush(); ?>

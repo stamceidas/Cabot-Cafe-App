@@ -1,4 +1,5 @@
 <?
+	ob_start();
 	require_once("../includes/common.php");
 	
 	//if session not set, not logged in
@@ -144,3 +145,4 @@
 		
 	</body>
 </html>
+<? ob_flush(); ?>
