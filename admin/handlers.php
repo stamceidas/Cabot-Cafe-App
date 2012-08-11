@@ -91,7 +91,6 @@
 				$sql = "UPDATE weeklyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
 			if(($type != 'deliveries') && !mysql_query($sql))
 				echoexit('error', "Failed to update item amounts correctly!");
-				// echoexit('error',$sql);
 		}
 		
 		fwrite($filehandle, $namesStr.$newline);
@@ -476,7 +475,7 @@
 				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
 				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
 				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
-				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['min_amt'].'" type="tel">';
+				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['last_amt'].'" type="tel">';
 				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
 				$itemform = $itemform . '</div>';
 				
@@ -509,7 +508,7 @@
 				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
 				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
 				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
-				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['min_amt'].'" type="tel">';
+				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['last_amt'].'" type="tel">';
 				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
 				$itemform = $itemform . '</div>';
 				

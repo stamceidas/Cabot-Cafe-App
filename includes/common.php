@@ -26,11 +26,19 @@
 		exit();
 	}
 	
-    //generate password hash with blowfish
+    //generate password hash with blowfish. fallback is sha1 until HCS upgrades from PHP 5.2.4
+	//for blowfish, salt needs to be 22 char from ./0-9A-Za-z
     function passGen($password, $salt){
-		//need 22 char salt from ./0-9A-Za-z
-		$saltpre = "$2a$10$"; //contains blowfish identifier and cost param after middle $
-        return crypt($password, $saltpre.$salt);
+		// this function by default should use crypt with blowfish.
+		// I used SHA1 because HCS operates with PHP 5.2.4 and is badly in need of upgrade
+		// on systems with 5.3.x, there is no reason NOT to use blowfish
+	
+		//contains blowfish identifier and cost param after middle $
+		$saltpre = "$2a$10$"; 
+		
+        //comment in the crypt line to use blowfish, comment in sha1 line to use sha1
+		//return crypt($password, $saltpre.$salt);
+		return sha1($password.$salt);
     }
 
 	//generate navbar for each page in backend
