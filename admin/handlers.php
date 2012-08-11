@@ -97,7 +97,8 @@
 		fwrite($filehandle, $valuesStr);
 		
 		fclose($filehandle);
-		
+		chmod($filename,0744);
+
 		return true;
 	}
 	
