@@ -18,7 +18,7 @@
 		// create form with item's information
 		
 		$formStr = '<form id="itemform" name="'.$itemid.'"><table>'
-					.'<tr><td id="label">Item Name:</td><td id="field"><input type="text" id="itemname" value="'.$row['item_name'].'" readonly/></td></tr>'
+					.'<tr><td id="label">Item Name:</td><td id="field"><input type="text" id="itemname" value="'.$row['item_name'].'"/></td></tr>'
 					.'<tr><td id="label">Location: </td><td id="field"><input type="text" id="location" value="'.$row['location'].'"/></td></tr>'
 					.'<tr><td id="label">Min. Amount: </td><td id="field"><input type="text" id="minamt" value="'.$row['min_amt'].'"/></td></tr>'
 					.'<tr><td id="label">Max. Amount: </td><td id="field"><input type="text" id="maxamt" value="'.$row['max_amt'].'"/></td></tr>'
