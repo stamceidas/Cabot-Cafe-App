@@ -370,7 +370,7 @@
 				if(($row['warning_limit'] != $params['warning_limit']) && is_numeric($params['warning_limit']))
 					$row['warning_limit'] = $params['warning_limit'];
 				
-				if(mysql_query("UPDATE nightlyinventory SET location = '{$row["location"]}', item_name = '{$row["location"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
+				if(mysql_query("UPDATE nightlyinventory SET location = '{$row["location"]}', item_name = '{$row["item_name"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
 					echoexit('update_success', "Update successful!");
 				else
 					echoexit('error', "Update failed!");
@@ -395,7 +395,7 @@
 				if(($row['warning_limit'] != $params['warning_limit']) && is_numeric($params['warning_limit']))
 					$row['warning_limit'] = $params['warning_limit'];
 				
-				if(mysql_query("UPDATE weeklyinventory SET location = '{$row["location"]}', item_name = '{$row["location"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
+				if(mysql_query("UPDATE weeklyinventory SET location = '{$row["location"]}', item_name = '{$row["item_name"]}', min_amt = '{$row["min_amt"]}', max_amt = '{$row["max_amt"]}', increment = '{$row["increment"]}', measure_type = '{$row["measure_type"]}', warning_limit = '{$row["warning_limit"]}' WHERE id = {$params["id"]}"))
 					echoexit('update_success', "Update successful!");
 				else
 					echoexit('error', "Update failed!");
