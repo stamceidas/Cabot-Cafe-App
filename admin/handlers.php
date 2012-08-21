@@ -9,6 +9,7 @@
 	 ************************************************/
 	
 	require_once("../includes/common.php");
+	require_once("../includes/constants.php");
 	
 	/*************
 	* Constants
@@ -84,12 +85,12 @@
 		foreach($items_array as $item){
 			$namesStr = $namesStr . $item['name'] . $sep;
 			$valuesStr = $valuesStr . $item['value'] . $sep;
-		
+			
 			if($type == 'nightly')
 				$sql = "UPDATE nightlyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
 			if($type == 'weekly')
 				$sql = "UPDATE weeklyinventory SET last_amt = {$item['value']} WHERE item_name = '{$item['name']}'";
-			if(($type != 'deliveries') && !mysql_query($sql))
+			if(($type != 'deliveries') && !mysql_query($sql) && ($item['name'] != 'comments_text'))
 				echoexit('error', "Failed to update item amounts correctly!");
 		}
 		
@@ -104,6 +105,7 @@
 	
 	
 	function generate_mail($type,$filename){
+		global $live;
 		
 		$date = date("Ymd");
 		$time = date("Gi");
@@ -122,10 +124,15 @@
 		//get account name from url
 		preg_match_all('/^(\/[^\/]*){1}/',$_SERVER['REQUEST_URI'],$matches);	
 		
-		$url="http://".$_SERVER['HTTP_HOST'].$matches[0][0].substr($filename,2);
+		if($live)
+			$url="http://".$_SERVER['HTTP_HOST'].$matches[0][0].'/Cabot-Cafe-App'.substr($filename,2);
+		else
+			$url="http://".$_SERVER['HTTP_HOST'].$matches[0][0].substr($filename,2);
 		
 		$msg = "Cafe Log was submitted by user:". $_SESSION['firstname'] .' '. $_SESSION['lastname'] ."<".$_SESSION['user'].">. Download it here: " . $url;
-		echoexit('error',$msg);
+		
+		if(!$live)
+			echoexit('error',$msg);
 		
 		$to      = $receiver_email;
 		if($type == 'nightly')
@@ -140,7 +147,7 @@
 					'X-Mailer: PHP/' . phpversion();
 
 		$x = mail($to, $subject, $message, $headers);
-		//$x = 1;
+		
 		return $x;
 	}
 	
@@ -474,7 +481,7 @@
 				
 				$itemform = $itemform . '<div data-role="fieldcontain">';
 				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
-				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
+				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['measure_type'].')</label>';
 				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
 				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['last_amt'].'" type="tel">';
 				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
@@ -482,6 +489,12 @@
 				
 			
 			}
+			
+			$itemform = $itemform . '<div data-role="fieldcontain">';
+			$itemform = $itemform . '<label for="comments_text">Comments</label>';
+			$itemform = $itemform . '<textarea cols="40" rows="8" name="comments_text" id="comments_text" placeholder="Type response here"></textarea>';
+			$itemform = $itemform . '</div>';
+			
 			$itemform = $itemform . '<a href="#" id="nightlySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
 			$itemform = $itemform . '</form>';
 			$itemform = $itemform . '<div class="response"></div>';
@@ -515,6 +528,12 @@
 				
 			
 			}
+			
+			$itemform = $itemform . '<div data-role="fieldcontain">';
+			$itemform = $itemform . '<label for="comments_text">Comments</label>';
+			$itemform = $itemform . '<textarea cols="40" rows="8" name="comments_text" id="comments_text" placeholder="Type response here"></textarea>';
+			$itemform = $itemform . '</div>';
+			
 			$itemform = $itemform . '<a href="#" id="weeklySubmitButton" data-theme="e" data-role="button" data-transition="fade">Submit</a>';
 			$itemform = $itemform . '</form>';
 			$itemform = $itemform . '<div class="response"></div>';

@@ -2,7 +2,8 @@
 
 	//constants
 	date_default_timezone_set('EST');
-
+	$live = FALSE;
+	
     /***********************************************************************
      * constants.php
      *
