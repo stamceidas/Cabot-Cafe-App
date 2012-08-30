@@ -520,7 +520,7 @@
 				
 				$itemform = $itemform . '<div data-role="fieldcontain">';
 				$itemform = $itemform . '<span class="increment" style="display:none">'.$row['increment'].'</span>';
-				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['increment'].')</label>';
+				$itemform = $itemform . '<label for="'.$row['item_name'].'">'.$row['item_name'].'('.$row['measure_type'].')</label>';
 				$itemform = $itemform . '<a href="#" class="minus" data-theme="d" data-role="button" data-inline="true">-</a>';
 				$itemform = $itemform . '<input class="count" name="'.$row['item_name'].'" id="'.$row['item_name'].'" placeholder="###" value="'.$row['last_amt'].'" type="tel">';
 				$itemform = $itemform . '<a href="#" class="plus" data-theme="d" data-role="button" data-inline="true">+</a>';
