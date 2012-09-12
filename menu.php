@@ -5,7 +5,13 @@
 
 	//if session not set, not logged in
 	if(empty($_SESSION['user'])){
-			header("Location:index.php");
+		header("Location:index.php");
+	}
+	
+	//if logout then destroy the session and redirect the user
+	if(isset($_GET['logout'])){
+		session_destroy();
+		header("Location:index.php");
 	}
 
 ?>
@@ -65,6 +71,7 @@
 		<p><a href="#weekly" data-role="button" id="weeklyInvButton" name="weekly">Weekly Inventory</a></p>
 		<p><a href="#deliveries" data-role="button" id="deliveriesButton" name="deliveries">Deliveries</a></p>
 		<p><a href="#emergency"data-role="button" data-rel="dialog" data-transition="pop">Emergency!</a></p>
+		<p><a href="menu.php?logout" data-ajax=false data-role="button" id="logoutbutton" name="logout">Log Out</a></p>
 		
 	</div><!-- /content -->
 	
